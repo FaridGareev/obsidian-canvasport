@@ -70,7 +70,7 @@ CanvasPort requires the desktop version of Obsidian because image and PDF render
 
 ### Install from a GitHub release
 
-1. Download `main.js`, `manifest.json`, and `styles.css` from the latest release. The release also includes `LICENSE` and `NOTICE` for attribution.
+1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](https://github.com/FaridGareev/obsidian-canvasport/releases/latest). The release also includes `LICENSE` and `NOTICE` for attribution.
 2. Create `<your-vault>/.obsidian/plugins/canvasport/`.
 3. Copy the three downloaded files into that folder.
 4. Restart Obsidian, open **Settings → Community plugins**, and enable **CanvasPort**.
@@ -123,7 +123,7 @@ npm run verify
 
 ## Contributing
 
-Issues, feature ideas, documentation fixes, and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+[Issues](https://github.com/FaridGareev/obsidian-canvasport/issues), feature ideas, documentation fixes, and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ## Changelog
 

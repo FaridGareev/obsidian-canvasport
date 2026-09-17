@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "Export Obsidian Canvas files to portable web, image, document, and diagram formats.",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/FaridGareev/obsidian-canvasport#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FaridGareev/obsidian-canvasport.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FaridGareev/obsidian-canvasport/issues"
+  },
   "private": true,
   "type": "module",
   "main": "build/main.js",
