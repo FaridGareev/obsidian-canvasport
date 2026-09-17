@@ -8,6 +8,28 @@
 
 Export your [Obsidian Canvas](https://obsidian.md/canvas) files as shareable web pages, images, documents, and diagram formats. Canvas Export is an open-source Obsidian plugin for turning a canvas into HTML, PNG, JPEG, WebP, SVG, PDF, Excalidraw, Mermaid, or D2 without leaving your vault.
 
+## Visual examples
+
+These real regression tests compare the original Obsidian Canvas with the PDF produced by Canvas Export. Click any image to inspect the full-resolution result.
+
+### Typography, Markdown, and node geometry
+
+| Obsidian Canvas | Exported PDF |
+| --- | --- |
+| [![Obsidian Canvas typography test with Markdown, task lists, code, links, and different node sizes](imgs/obsidian_test_01.png)](imgs/obsidian_test_01.png) | [![Canvas Export PDF typography result preserving Markdown, node geometry, colors, and connections](imgs/exported_pdf_test_01.png)](imgs/exported_pdf_test_01.png) |
+
+### Embedded files and format coverage
+
+| Obsidian Canvas | Exported PDF |
+| --- | --- |
+| [![Obsidian Canvas test containing SVG, PNG, JPEG, WebP, GIF, BMP, AVIF, PDF, Markdown, and text files](imgs/obsidian_test_03.png)](imgs/obsidian_test_03.png) | [![Canvas Export PDF result containing embedded images, Markdown, text fixtures, fallbacks, and links](imgs/exported_pdf_test_03.png)](imgs/exported_pdf_test_03.png) |
+
+### Groups, surfaces, and backgrounds
+
+| Obsidian Canvas | Exported PDF |
+| --- | --- |
+| [![Obsidian Canvas group test with cover, ratio, repeat, nested, raster, and transparent backgrounds](imgs/obsidian_test_04.png)](imgs/obsidian_test_04.png) | [![Canvas Export PDF result preserving group backgrounds, opaque cards, labels, and overlapping regions](imgs/exported_pdf_test_04.png)](imgs/exported_pdf_test_04.png) |
+
 ## What Canvas Export does
 
 - Exports one canvas to several formats in a single action.
@@ -31,6 +53,15 @@ Export your [Obsidian Canvas](https://obsidian.md/canvas) files as shareable web
 | Excalidraw | Continuing visual work in Excalidraw |
 | Mermaid | Version-controlled text diagrams |
 | D2 | Diagram-as-code workflows |
+
+## Included test suite
+
+The repository includes a self-contained Obsidian test workspace in [`Plugin/`](Plugin/README.md). It provides eight focused Canvas files, reusable image and document fixtures, expected-result documentation, and reference exports for repeatable visual regression testing.
+
+- Start with [`00 - Test Suite Dashboard.canvas`](Plugin/00%20-%20Test%20Suite%20Dashboard.canvas).
+- Use [`reference/Expected Results.md`](Plugin/reference/Expected%20Results.md) for format-by-format acceptance checks.
+- Record manual verification in [`reference/Test Run Template.md`](Plugin/reference/Test%20Run%20Template.md).
+- Compare generated files with the reference exports in `Plugin/Test01`, `Plugin/Test03`, and `Plugin/Test04`.
 
 ## Install locally in Obsidian
 
@@ -75,6 +106,8 @@ npm run verify
 - `src/services` — vault I/O and Electron rendering
 - `src/ui` — settings and export dialogs
 - `tests` — automated exporter tests
+- `Plugin` — complete Obsidian Canvas QA workspace and visual regression fixtures
+- `imgs` — full-resolution README comparison screenshots
 
 ## Contributing
 

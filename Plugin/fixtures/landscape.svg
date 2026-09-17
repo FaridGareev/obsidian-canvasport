@@ -1,0 +1,18 @@
+<!-- Canvas Export test fixture. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#312e81"/>
+      <stop offset="0.5" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#0891b2"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="960" height="540" rx="36" fill="#1c1917"/>
+  <rect x="18" y="18" width="924" height="504" rx="28" fill="url(#sky)"/>
+  <circle cx="770" cy="120" r="90" fill="#22d3ee" opacity=".34" filter="url(#glow)"/>
+  <path d="M18 430 L210 260 L360 385 L535 190 L760 405 L942 240 V522 H18Z" fill="#171426" opacity=".72"/>
+  <path d="M18 474 L260 330 L420 450 L640 300 L942 440 V522 H18Z" fill="#0f172a" opacity=".78"/>
+  <text x="64" y="104" fill="#fff" font-family="Inter,Segoe UI,sans-serif" font-size="56" font-weight="700">Canvas Export</text>
+  <text x="68" y="154" fill="#e0e7ff" font-family="Inter,Segoe UI,sans-serif" font-size="24">Landscape image fixture - 16:9</text>
+</svg>

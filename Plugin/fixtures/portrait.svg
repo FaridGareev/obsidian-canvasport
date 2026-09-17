@@ -1,0 +1,10 @@
+<!-- Canvas Export test fixture. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#0891b2"/><stop offset="1" stop-color="#4c1d95"/></linearGradient></defs>
+  <rect width="600" height="900" rx="44" fill="url(#g)"/>
+  <rect x="48" y="48" width="504" height="804" rx="32" fill="#1c1917" opacity=".72" stroke="#fff" stroke-opacity=".22"/>
+  <circle cx="300" cy="300" r="130" fill="#8b5cf6" opacity=".75"/>
+  <circle cx="300" cy="300" r="78" fill="#22d3ee" opacity=".9"/>
+  <text x="300" y="560" text-anchor="middle" fill="#fff" font-family="Inter,Segoe UI,sans-serif" font-size="48" font-weight="700">Portrait</text>
+  <text x="300" y="615" text-anchor="middle" fill="#dbeafe" font-family="Inter,Segoe UI,sans-serif" font-size="24">2:3 image fixture</text>
+</svg>

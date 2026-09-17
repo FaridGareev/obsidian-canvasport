@@ -1,0 +1,6 @@
+{
+	"nodes":[
+		{"id":"only-node","type":"text","text":"# Minimal Canvas\n\nOne node, no edges, no groups.\n\n**Expected:** a compact export with the standard outer padding.\n","x":0,"y":0,"width":420,"height":220,"color":"6"}
+	],
+	"edges":[]
+}

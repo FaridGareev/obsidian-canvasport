@@ -1,0 +1,33 @@
+{
+  "name": "Canvas Export Complete Test Suite",
+  "version": "1.0.0",
+  "license": "MIT",
+  "language": "English",
+  "summary": {
+    "canvases": 8,
+    "nodes": 103,
+    "edges": 76
+  },
+  "coverage": [
+    "empty and minimal canvases",
+    "text and Markdown nodes",
+    "Markdown heading subpaths",
+    "external links",
+    "preset and custom colors",
+    "all connection sides",
+    "arrowhead combinations",
+    "edge labels",
+    "groups and nested groups",
+    "cover, ratio, and repeat backgrounds",
+    "SVG, PNG, JPEG, WebP, GIF, BMP, and AVIF images",
+    "multi-page PDF files",
+    "TypeScript, JSON, CSV, and plain text files",
+    "unsupported and intentionally missing files",
+    "negative coordinates and large bounds",
+    "tiny, tall, wide, and overflowing nodes"
+  ],
+  "intentionalMissingFiles": [
+    "Plugin/fixtures/intentionally-missing.bin"
+  ],
+  "entryPoint": "00 - Test Suite Dashboard.canvas"
+}

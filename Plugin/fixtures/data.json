@@ -1,0 +1,9 @@
+{
+  "suite": "Canvas Export",
+  "enabled": true,
+  "formats": ["html", "png", "jpeg", "webp", "svg", "pdf", "excalidraw", "mermaid", "d2"],
+  "quality": {
+    "imageScale": 2,
+    "imageQuality": 92
+  }
+}

@@ -1,0 +1,29 @@
+{
+	"nodes":[
+		{"id":"group","type":"group","x":-100,"y":-80,"width":2580,"height":1560,"color":"6","label":"Typography, Markdown, and Node Geometry"},
+		{"id":"intro","type":"text","text":"# Typography and Node Test\n\nEvery card below isolates a formatting or geometry case. The export should stay readable, aligned, clipped, and visually consistent in light and dark themes.","x":0,"y":20,"width":1900,"height":150,"color":"6"},
+		{"id":"headings","type":"text","text":"# Heading One\n## Heading Two\n### Heading Three\n#### Heading Four\n\nBody text follows the complete heading scale.","x":0,"y":260,"width":360,"height":310,"color":"1"},
+		{"id":"wide","type":"text","text":"## Extra-wide node\nA wide card checks horizontal composition, border radius, line length, and edge anchoring.","x":1650,"y":655,"width":650,"height":120,"color":"2"},
+		{"id":"inline","type":"text","text":"## Inline Formatting\n\n**Bold text**\n\n*Italic text*\n\n~~Strikethrough~~\n\n`inline code`\n\n[External link](https://obsidian.md)","x":640,"y":260,"width":360,"height":310,"color":"2"},
+		{"id":"tasks","type":"text","text":"## Lists and Tasks\n\n1. First ordered item\n2. Second ordered item\n\n- Parent item\n  - Nested item\n\n- [x] Complete\n- [ ] Incomplete","x":1325,"y":260,"width":360,"height":310,"color":"3"},
+		{"id":"quote","type":"text","text":"## Quote and Divider\n\n> Good exports preserve hierarchy, spacing, and contrast.\n\n---\n\nA divider should remain subtle but visible.","x":1975,"y":260,"width":360,"height":310,"color":"4"},
+		{"id":"long","type":"text","text":"## Long Content\n\nThis deliberately long paragraph verifies predictable line wrapping and clipping. It repeats enough information to exceed a compact card without escaping its border, covering neighboring nodes, or exposing the Canvas grid through the surface. A professional export should keep the visual hierarchy intact even when source content is larger than the available rectangle.","x":700,"y":640,"width":350,"height":270,"color":"6"},
+		{"id":"code","type":"text","text":"## Code Block\n\n```ts\nconst output = await exportCanvas({\n  theme: 'dark',\n  scale: 2,\n});\n```\n\nThe block must clip inside the card.","x":0,"y":640,"width":500,"height":270,"color":"5"},
+		{"id":"full-note","type":"file","file":"Plugin/fixtures/rich-markdown.md","x":0,"y":1050,"width":640,"height":350,"color":"3"},
+		{"id":"section-note","type":"file","file":"Plugin/fixtures/rich-markdown.md","subpath":"#Selected section","x":760,"y":1050,"width":500,"height":220,"color":"4"},
+		{"id":"space-note","type":"file","file":"Plugin/fixtures/nested/file with spaces.md","subpath":"#Embedded section","x":1725,"y":1050,"width":500,"height":220,"color":"5"},
+		{"id":"tiny","type":"text","text":"**Tiny node**\nClipped safely.","x":1325,"y":640,"width":130,"height":70,"color":"1"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"intro","fromSide":"bottom","toNode":"headings","toSide":"top","color":"1","label":"heading scale"},
+		{"id":"e2","fromNode":"headings","fromSide":"right","toNode":"inline","toSide":"left","color":"2","label":"inline styles"},
+		{"id":"e3","fromNode":"inline","fromSide":"right","toNode":"tasks","toSide":"left","color":"3","label":"structured content"},
+		{"id":"e4","fromNode":"tasks","fromSide":"right","toNode":"quote","toSide":"left","color":"4","label":"semantic blocks"},
+		{"id":"e5","fromNode":"code","fromSide":"right","toNode":"long","toSide":"left","color":"5","label":"overflow"},
+		{"id":"e6","fromNode":"long","fromSide":"right","toNode":"tiny","toSide":"left","color":"6","label":"size extremes"},
+		{"id":"e7","fromNode":"tiny","fromSide":"right","toNode":"wide","toSide":"left","color":"1","label":"geometry"},
+		{"id":"e8","fromNode":"code","fromSide":"bottom","toNode":"full-note","toSide":"top","color":"3","label":"complete note"},
+		{"id":"e9","fromNode":"long","fromSide":"bottom","toNode":"section-note","toSide":"top","color":"4","label":"heading subpath"},
+		{"id":"e10","fromNode":"wide","fromSide":"bottom","toNode":"space-note","toSide":"top","color":"5","label":"nested path"}
+	]
+}

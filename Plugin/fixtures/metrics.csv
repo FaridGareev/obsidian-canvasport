@@ -1,0 +1,6 @@
+case,status,priority,expected
+Typography,ready,high,Formatting remains readable
+Images,ready,high,Aspect ratio is preserved
+PDF,ready,high,First page is embedded
+Edges,ready,medium,Labels are centered
+Empty canvas,ready,low,Export completes

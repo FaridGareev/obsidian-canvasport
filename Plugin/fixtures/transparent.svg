@@ -1,0 +1,8 @@
+<!-- Canvas Export test fixture. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <g fill="none" stroke-linecap="round">
+    <circle cx="220" cy="180" r="120" stroke="#8b5cf6" stroke-width="44" opacity=".78"/>
+    <circle cx="420" cy="180" r="120" stroke="#22d3ee" stroke-width="44" opacity=".78"/>
+  </g>
+  <text x="320" y="196" text-anchor="middle" fill="#fff" stroke="#171426" stroke-width="6" paint-order="stroke" font-family="Inter,Segoe UI,sans-serif" font-size="42" font-weight="700">ALPHA</text>
+</svg>

@@ -1,0 +1,7 @@
+<!-- Canvas Export test fixture. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72">
+  <rect width="72" height="72" fill="#231b28"/>
+  <path d="M0 0H36V36H0ZM36 36H72V72H36Z" fill="#7c3aed" opacity=".62"/>
+  <circle cx="18" cy="18" r="4" fill="#67e8f9"/>
+  <circle cx="54" cy="54" r="4" fill="#67e8f9"/>
+</svg>

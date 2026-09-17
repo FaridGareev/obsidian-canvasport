@@ -1,0 +1,9 @@
+CANVAS EXPORT - PLAIN TEXT FIXTURE
+
+Line wrapping should remain predictable.
+Tabs and indentation:
+    first level
+        second level
+
+Special symbols: -> <- <-> >= <= + - * / # @ &
+The final line verifies that the complete file can be read.

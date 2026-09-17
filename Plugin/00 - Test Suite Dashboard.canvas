@@ -1,0 +1,24 @@
+{
+	"nodes":[
+		{"id":"suite","type":"group","x":0,"y":0,"width":1900,"height":1520,"color":"6","label":"Canvas Export - Complete Test Suite"},
+		{"id":"hero","type":"text","text":"# Canvas Export Test Suite\n\nA polished visual index for validating every supported export path. Open the focused canvases in this folder, run the recommended export matrix, and compare the results against Obsidian.","x":80,"y":80,"width":1740,"height":190,"color":"6"},
+		{"id":"type","type":"text","text":"## 01 - Typography and Nodes\n\nMarkdown formatting, tasks, lists, code, quotes, links, node sizes, overflow, full notes, and heading subpaths.","x":100,"y":360,"width":470,"height":220,"color":"1"},
+		{"id":"edges","type":"text","text":"## 02 - Edges and Colors\n\nSix preset colors, custom hexadecimal colors, every connection side, arrow endpoints, long labels, and crossing paths.","x":715,"y":360,"width":470,"height":220,"color":"2"},
+		{"id":"files","type":"text","text":"## 03 - Embedded Files\n\nRaster images, SVG, animation, PDF, Markdown sections, source code, JSON, CSV, plain text, links, and missing files.","x":1330,"y":360,"width":470,"height":220,"color":"3"},
+		{"id":"groups","type":"text","text":"## 04 - Groups and Backgrounds\n\nCover, ratio, and repeat backgrounds, opaque surfaces, nested regions, overlapping groups, and group labels.","x":100,"y":700,"width":470,"height":220,"color":"4"},
+		{"id":"stress","type":"text","text":"## 05 - Stress and Boundaries\n\nNegative coordinates, dense grids, tiny cards, wide cards, long content, unusual geometry, and large export bounds.","x":715,"y":700,"width":470,"height":220,"color":"5"},
+		{"id":"minimal","type":"text","text":"## 06 and 07 - Minimal Cases\n\nA single-node canvas plus a completely empty canvas verify safe fallback dimensions and basic export reliability.","x":1330,"y":700,"width":470,"height":220,"color":"6"},
+		{"id":"readme","type":"file","file":"Plugin/README.md","x":350,"y":1200,"width":1215,"height":220,"color":"6"}
+	],
+	"edges":[
+		{"id":"h1","fromNode":"hero","fromSide":"bottom","toNode":"type","toSide":"top","color":"1","label":"content"},
+		{"id":"h2","fromNode":"hero","fromSide":"bottom","toNode":"edges","toSide":"top","color":"2","label":"connections"},
+		{"id":"h3","fromNode":"hero","fromSide":"bottom","toNode":"files","toSide":"top","color":"3","label":"assets"},
+		{"id":"t1","fromNode":"type","fromSide":"bottom","toNode":"groups","toSide":"top","color":"4","label":"visual structure"},
+		{"id":"t2","fromNode":"edges","fromSide":"bottom","toNode":"stress","toSide":"top","color":"5","label":"scale up"},
+		{"id":"t3","fromNode":"files","fromSide":"bottom","toNode":"minimal","toSide":"top","color":"6","label":"fallbacks"},
+		{"id":"r1","fromNode":"groups","fromSide":"bottom","toNode":"readme","toSide":"left","color":"4","label":"checklist"},
+		{"id":"r2","fromNode":"stress","fromSide":"bottom","toNode":"readme","toSide":"top","color":"5","label":"results"},
+		{"id":"r3","fromNode":"minimal","fromSide":"bottom","toNode":"readme","toSide":"right","color":"6","label":"complete"}
+	]
+}
