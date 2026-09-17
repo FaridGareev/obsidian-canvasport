@@ -1,4 +1,4 @@
-<!-- Copyright (c) 2026 Farid Gareev. SPDX-License-Identifier: MIT -->
+<!-- SPDX-License-Identifier: MIT -->
 
 ---
 name: Feature request

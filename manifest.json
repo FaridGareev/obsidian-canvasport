@@ -4,6 +4,5 @@
   "version": "0.1.0",
   "minAppVersion": "1.7.0",
   "description": "Export Obsidian Canvas files to HTML, images, SVG, PDF, Excalidraw, Mermaid, and D2.",
-  "author": "Farid Gareev",
   "isDesktopOnly": false
 }

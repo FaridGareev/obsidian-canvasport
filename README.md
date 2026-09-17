@@ -1,6 +1,5 @@
 <!--
   Canvas Export
-  Copyright (c) 2026 Farid Gareev
   SPDX-License-Identifier: MIT
 -->
 
