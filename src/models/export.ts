@@ -5,7 +5,7 @@
  * @license MIT
  */
 
-export const export_formats = ['html_light', 'html_dark', 'png', 'jpeg', 'webp', 'svg', 'excalidraw', 'pdf_light', 'pdf_dark', 'mermaid', 'd2'] as const;
+export const export_formats = ['html', 'png', 'jpeg', 'webp', 'svg', 'pdf', 'excalidraw', 'mermaid', 'd2'] as const;
 
 export type export_format = typeof export_formats[number];
 export type export_theme = 'light' | 'dark';
@@ -34,22 +34,32 @@ export interface export_options extends Omit<export_preferences, 'visual_theme'>
 }
 
 export const format_labels: Record<export_format, string> = {
-	html_light: 'HTML (light)',
-	html_dark: 'HTML (dark)',
-	png: 'PNG image',
-	jpeg: 'JPEG image',
-	webp: 'WebP image',
+	html: 'HTML',
+	png: 'PNG',
+	jpeg: 'JPEG',
+	webp: 'WebP',
 	svg: 'SVG',
+	pdf: 'PDF',
 	excalidraw: 'Excalidraw',
-	pdf_light: 'PDF (light)',
-	pdf_dark: 'PDF (dark)',
-	mermaid: 'Mermaid (.mmd)',
-	d2: 'D2 (.d2)',
+	mermaid: 'Mermaid',
+	d2: 'D2',
+};
+
+export const format_descriptions: Record<export_format, string> = {
+	html: 'Interactive web page',
+	png: 'Sharp image with transparency',
+	jpeg: 'Small image for sharing',
+	webp: 'Modern compact image',
+	svg: 'Scalable vector image',
+	pdf: 'Printable document',
+	excalidraw: 'Editable drawing',
+	mermaid: 'Mermaid source file',
+	d2: 'D2 source file',
 };
 
 export function create_default_settings(): export_settings {
 	return {
-		default_formats: ['html_light'],
+		default_formats: ['html'],
 		last_formats: [],
 		visual_theme: 'system',
 		group_title_scale: 150,
@@ -64,6 +74,16 @@ export function create_default_settings(): export_settings {
 
 export function is_export_format(value: unknown): value is export_format {
 	return typeof value === 'string' && export_formats.includes(value as export_format);
+}
+
+export function normalize_export_formats(candidate: unknown): export_format[] {
+	if (!Array.isArray(candidate)) return [];
+	const migrated = candidate.map((item: unknown) => {
+		if (item === 'html_light' || item === 'html_dark') return 'html';
+		if (item === 'pdf_light' || item === 'pdf_dark') return 'pdf';
+		return item;
+	}).filter(is_export_format);
+	return [...new Set(migrated)];
 }
 
 export function is_visual_theme(value: unknown): value is visual_theme {
@@ -84,20 +104,15 @@ export function clamp_image_quality(value: unknown): number {
 	return Number.isFinite(quality) ? Math.max(1, Math.min(100, Math.round(quality))) : 92;
 }
 
-export function format_file_name(canvas_name: string, format: export_format, selected_formats: export_format[]): string {
-	const has_light_html = selected_formats.includes('html_light');
-	const has_light_pdf = selected_formats.includes('pdf_light');
-	const has_dark_pdf = selected_formats.includes('pdf_dark');
+export function format_file_name(canvas_name: string, format: export_format): string {
 	const names: Record<export_format, string> = {
-		html_light: `${canvas_name}.html`,
-		html_dark: `${canvas_name}${has_light_html ? ' (dark)' : ''}.html`,
+		html: `${canvas_name}.html`,
 		png: `${canvas_name}.png`,
 		jpeg: `${canvas_name}.jpg`,
 		webp: `${canvas_name}.webp`,
 		svg: `${canvas_name}.svg`,
+		pdf: `${canvas_name}.pdf`,
 		excalidraw: `${canvas_name}.excalidraw`,
-		pdf_light: `${canvas_name}${has_dark_pdf ? ' (light)' : ''}.pdf`,
-		pdf_dark: `${canvas_name}${has_light_pdf ? ' (dark)' : ''}.pdf`,
 		mermaid: `${canvas_name}.mmd`,
 		d2: `${canvas_name}.d2`,
 	};

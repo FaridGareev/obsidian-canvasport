@@ -11,6 +11,7 @@ import { render_d2_export, render_mermaid_export } from '../src/exporters/diagra
 import { render_excalidraw_export } from '../src/exporters/excalidraw_exporter';
 import { render_html_export } from '../src/exporters/html_exporter';
 import { render_svg_export } from '../src/exporters/svg_exporter';
+import { export_formats, format_file_name, format_labels, normalize_export_formats } from '../src/models/export';
 import { calculate_image_size } from '../src/services/electron_render_service';
 
 const source = JSON.stringify({
@@ -45,6 +46,12 @@ assert.doesNotMatch(flat_html, /radial-gradient/u);
 assert.doesNotMatch(flat_html, /Overview/u);
 assert.doesNotMatch(transparent_svg, /fill="#ffffff"/u);
 assert.match(dark_svg, /fill="#171b22"/u);
+assert.deepEqual(export_formats, ['html', 'png', 'jpeg', 'webp', 'svg', 'pdf', 'excalidraw', 'mermaid', 'd2']);
+assert.equal(format_file_name('Example', 'html'), 'Example.html');
+assert.equal(format_file_name('Example', 'pdf'), 'Example.pdf');
+for (const label of Object.values(format_labels)) assert.doesNotMatch(label, /[()]/u);
+assert.deepEqual(normalize_export_formats(['html_light']), ['html']);
+assert.deepEqual(normalize_export_formats(['pdf_dark', 'pdf_light']), ['pdf']);
 assert.match(dark_svg, /fill="#171b22"/u);
 assert.match(mermaid, /flowchart TD/u);
 assert.match(mermaid, /subgraph group_a/u);

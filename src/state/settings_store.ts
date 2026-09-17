@@ -7,7 +7,7 @@
 
 import type { Plugin } from 'obsidian';
 import { z } from 'zod';
-import { clamp_image_quality, clamp_image_scale, create_default_settings, is_export_format, is_visual_theme, type export_format, type export_settings } from '../models/export';
+import { clamp_image_quality, clamp_image_scale, create_default_settings, is_visual_theme, normalize_export_formats, type export_settings } from '../models/export';
 import { normalize_output_folder } from '../services/vault_service';
 
 interface stored_settings {
@@ -26,12 +26,11 @@ interface stored_settings {
 export async function load_export_settings(plugin: Plugin): Promise<export_settings> {
 	const value = parse_stored_settings(await plugin.loadData());
 	const defaults = create_default_settings();
-	const formats = (candidate: unknown): export_format[] => Array.isArray(candidate) ? candidate.map((item: unknown) => item === 'pdf' ? 'pdf_light' : item).filter(is_export_format) : [];
 	let output_folder = defaults.output_folder;
 	try { output_folder = typeof value?.output_folder === 'string' ? normalize_output_folder(value.output_folder) : defaults.output_folder; } catch { output_folder = defaults.output_folder; }
 	return {
-		default_formats: formats(value.default_formats).length ? formats(value.default_formats) : defaults.default_formats,
-		last_formats: formats(value.last_formats),
+		default_formats: normalize_export_formats(value.default_formats).length ? normalize_export_formats(value.default_formats) : defaults.default_formats,
+		last_formats: normalize_export_formats(value.last_formats),
 		visual_theme: is_visual_theme(value.visual_theme) ? value.visual_theme : defaults.visual_theme,
 		group_title_scale: clamp_title_scale(value.group_title_scale),
 		include_grid: read_boolean(value.include_grid, defaults.include_grid),

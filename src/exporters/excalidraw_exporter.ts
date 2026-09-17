@@ -25,7 +25,7 @@ export function render_excalidraw_export(document: canvas_document, options: exp
 		const group_shape = make_shape(make_id('group'), group.x, group.y, group.width, group.height, color, now, null, true);
 		elements.push(group_shape);
 		element_by_node.set(group.id, group_shape);
-		if (group.label) elements.push(make_text(make_id('label'), group.x + 10, group.y - 24, group.width - 20, 20, group.label, color, now, null, Math.round(12 * clamp_scale(options.group_title_scale))));
+		if (options.include_group_labels && group.label) elements.push(make_text(make_id('label'), group.x + 10, group.y - 24, group.width - 20, 20, group.label, color, now, null, Math.round(12 * clamp_scale(options.group_title_scale))));
 	}
 	for (const node of snapshot.canvas.nodes.filter((item) => item.type !== 'group')) {
 		const color = resolve_canvas_color(node.color);

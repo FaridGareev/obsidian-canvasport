@@ -14,7 +14,7 @@
 	padding-bottom: 4px;
 }
 
-.canvas_export_modal .modal-title {
+.canvas_export_modal_container .modal-title {
 	margin-bottom: 4px;
 }
 
@@ -49,9 +49,26 @@
 	font-weight: var(--font-medium);
 }
 
+.canvas_export_format_group {
+	min-width: 0;
+	margin-top: 16px;
+	padding: 0;
+	border: 0;
+}
+
+.canvas_export_format_group legend {
+	width: 100%;
+	margin: 0 0 8px;
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	font-weight: var(--font-semibold);
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
 .canvas_export_format_grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(162px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 	gap: 8px;
 }
 
@@ -59,7 +76,7 @@
 	display: flex;
 	align-items: center;
 	gap: 9px;
-	min-height: 44px;
+	min-height: 62px;
 	box-sizing: border-box;
 	padding: 9px 11px;
 	border: 1px solid var(--background-modifier-border);
@@ -70,6 +87,32 @@
 	font-size: var(--font-ui-small);
 	line-height: 1.3;
 	transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.canvas_export_choice_text {
+	display: grid;
+	gap: 3px;
+	min-width: 0;
+}
+
+.canvas_export_choice_name,
+.canvas_export_choice_description {
+	display: block;
+}
+
+.canvas_export_choice_name {
+	font-weight: var(--font-medium);
+}
+
+.canvas_export_choice_description {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	line-height: 1.35;
+}
+
+.canvas_export_choice.is-selected .canvas_export_choice_description {
+	color: var(--text-normal);
+	opacity: 0.82;
 }
 
 .canvas_export_choice:hover {

@@ -75,7 +75,7 @@ export default class canvas_export_plugin extends Plugin {
 			const failures: string[] = [];
 			for (const format of formats) {
 				try {
-					const written_path = await this.export_format(document, file.basename, folder, format, formats, preferences);
+					const written_path = await this.export_format(document, file.basename, folder, format, preferences);
 					if (written_path) output_names.push(written_path.split('/').pop() || written_path);
 				} catch (error) {
 					failures.push(`${format_labels[format]}: ${get_error_message(error)}`);
@@ -89,15 +89,15 @@ export default class canvas_export_plugin extends Plugin {
 		}
 	}
 
-	private async export_format(document: ReturnType<typeof parse_canvas_document>, canvas_name: string, folder: string, format: export_format, selected_formats: export_format[], preferences: export_preferences): Promise<string | undefined> {
-		let path = build_output_path(folder, format_file_name(canvas_name, format, selected_formats));
+	private async export_format(document: ReturnType<typeof parse_canvas_document>, canvas_name: string, folder: string, format: export_format, preferences: export_preferences): Promise<string | undefined> {
+		let path = build_output_path(folder, format_file_name(canvas_name, format));
 		if (await this.app.vault.adapter.exists(path)) {
 			const choice = await this.ask_overwrite(path, await find_available_path(this.app.vault, path));
 			if (choice === 'skip') return undefined;
 			if (choice === 'rename') path = await find_available_path(this.app.vault, path);
 		}
 		const options: export_options = { canvas_name, ...preferences, visual_theme: this.resolve_visual_theme(preferences.visual_theme) };
-		if (format === 'html_light' || format === 'html_dark') await write_text_file(this.app.vault, path, render_html_export(document, format === 'html_light' ? 'light' : 'dark', options));
+		if (format === 'html') await write_text_file(this.app.vault, path, render_html_export(document, options.visual_theme, { ...options, transparent_background: false }));
 		else if (format === 'svg') await write_text_file(this.app.vault, path, render_svg_export(document, options));
 		else if (format === 'excalidraw') await write_text_file(this.app.vault, path, JSON.stringify(render_excalidraw_export(document, options), null, 2));
 		else if (format === 'mermaid') await write_text_file(this.app.vault, path, render_mermaid_export(document));
@@ -108,9 +108,9 @@ export default class canvas_export_plugin extends Plugin {
 			const html = render_html_export(document, options.visual_theme, image_options);
 			await write_binary_file(this.app.vault, path, await create_raster_image(html, snapshot.bounds.width, snapshot.bounds.height, format, options.image_scale, options.image_quality));
 		}
-		else {
+		else if (format === 'pdf') {
 			const snapshot = create_canvas_snapshot(document);
-			const html = render_html_export(document, format === 'pdf_light' ? 'light' : 'dark', options);
+			const html = render_html_export(document, options.visual_theme, { ...options, transparent_background: false });
 			await write_binary_file(this.app.vault, path, await create_pdf_document(html, snapshot.bounds.width, snapshot.bounds.height));
 		}
 		return path;

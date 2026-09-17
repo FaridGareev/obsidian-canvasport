@@ -8,9 +8,11 @@ All notable changes to Canvas Export are documented here.
 
 ### Added
 
-- Visual export theme setting with Match Obsidian, Light, and Dark options for PNG, JPEG, WebP, and SVG.
+- Shared color theme setting with Use Obsidian theme, Always light, and Always dark options for all visual exports.
 - Responsive export dialog with clear format cards, selection feedback, accessible focus states, and improved mobile layout.
 - Plugin stylesheet included in the ready-to-install `build/` package.
+- Simplified HTML and PDF choices so one shared theme controls every visual export.
+- Context-aware settings that only appear when they apply to the selected file types.
 
 ## [0.1.0] - 2026-09-17
 

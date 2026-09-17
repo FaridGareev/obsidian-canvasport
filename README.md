@@ -11,7 +11,7 @@ Export your [Obsidian Canvas](https://obsidian.md/canvas) files as shareable web
 ## What Canvas Export does
 
 - Exports one canvas to several formats in a single action.
-- Produces light and dark HTML and PDF exports.
+- Applies one clear light, dark, or Obsidian-matched theme to every visual export.
 - Creates PNG, JPEG, WebP, and SVG visuals for documentation and sharing.
 - Converts Canvas structure into Excalidraw, Mermaid, and D2 diagrams.
 - Keeps canvas groups, connections, text, file references, and labels in the rendered output where the target format supports them.
@@ -23,10 +23,10 @@ Export your [Obsidian Canvas](https://obsidian.md/canvas) files as shareable web
 
 | Format | Best for |
 | --- | --- |
-| HTML (light / dark) | Publishing or sharing a self-contained visual canvas page |
+| HTML | Publishing or sharing a self-contained visual canvas page |
 | PNG, JPEG, WebP | Images for notes, docs, social posts, and presentations |
 | SVG | Sharp scalable graphics and documentation |
-| PDF (light / dark) | Printable or archival exports |
+| PDF | Printable or archival exports |
 | Excalidraw | Continuing visual work in Excalidraw |
 | Mermaid | Version-controlled text diagrams |
 | D2 | Diagram-as-code workflows |
