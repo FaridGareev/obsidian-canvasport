@@ -74,7 +74,10 @@ function render_edge_label(label: string, from: canvas_point, to: canvas_point):
 	const x = Math.round((from.x + to.x) / 2);
 	const y = Math.round((from.y + to.y) / 2);
 	const width = Math.max(54, Math.min(260, label.length * 7 + 18));
-	return `<g class="canvas_edge_label"><rect x="${x - width / 2}" y="${y - 13}" width="${width}" height="22" rx="4"/><text x="${x}" y="${y + 2}">${escape_html(label)}</text></g>`;
+	const top = y - 13;
+	const height = 22;
+	const center_y = top + height / 2;
+	return `<g class="canvas_edge_label"><rect x="${x - width / 2}" y="${top}" width="${width}" height="${height}" rx="4"/><text x="${x}" y="${center_y}">${escape_html(label)}</text></g>`;
 }
 
 function calculate_curve_controls(from: canvas_point, to: canvas_point, from_side: string | undefined, to_side: string | undefined): { first: canvas_point; second: canvas_point } {

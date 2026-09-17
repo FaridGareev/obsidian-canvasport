@@ -76,10 +76,13 @@ function render_svg_edge_label(label: string, from: canvas_point, to: canvas_poi
 	const x = Math.round((from.x + to.x) / 2);
 	const y = Math.round((from.y + to.y) / 2);
 	const width = Math.max(54, Math.min(260, label.length * 7 + 18));
+	const top = y - 13;
+	const height = 22;
+	const center_y = top + height / 2;
 	const background = theme === 'dark' ? '#1c1c1c' : '#ffffff';
 	const text = theme === 'dark' ? '#dadada' : '#222222';
 	const border = theme === 'dark' ? '#7e7e7e' : '#c0c0c0';
-	return `<g><rect x="${x - width / 2}" y="${y - 13}" width="${width}" height="22" rx="4" fill="${background}" stroke="${border}"/><text x="${x}" y="${y + 2}" fill="${text}" font-family="Inter,Segoe UI,sans-serif" font-size="12" text-anchor="middle" dominant-baseline="middle">${escape_html(label)}</text></g>`;
+	return `<g><rect x="${x - width / 2}" y="${top}" width="${width}" height="${height}" rx="4" fill="${background}" stroke="${border}"/><text x="${x}" y="${center_y}" fill="${text}" font-family="Inter,Segoe UI,sans-serif" font-size="12" text-anchor="middle" dominant-baseline="middle">${escape_html(label)}</text></g>`;
 }
 
 function calculate_svg_controls(from: canvas_point, to: canvas_point, from_side: string | undefined, to_side: string | undefined): { first: canvas_point; second: canvas_point } {

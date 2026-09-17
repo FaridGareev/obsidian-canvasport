@@ -19,6 +19,7 @@ All notable changes to Canvas Export are documented here.
 
 ### Fixed
 
+- Edge-label text is vertically centered inside its label box in HTML, image, PDF, and SVG exports.
 - Canvas cards now use the same opaque base surface and 7 percent color tint as Obsidian, so the dot grid no longer shows through nodes.
 - Group backgrounds now match Obsidian: cover and ratio use a centered cover image, while repeat uses the image's natural dimensions from the top-left corner.
 - Inline code and links no longer expose internal Markdown placeholder tokens in exported files.

@@ -63,6 +63,7 @@ assert.match(markdown_html, /<h2>Embedded section<\/h2>.*<strong>Inside section<
 assert.doesNotMatch(markdown_html, /Outside again/u);
 assert.match(markdown_svg, /Embedded section Inside.*section/u);
 assert.match(svg, />next<\/text>/u);
+assert.match(svg, /<rect x="273" y="185" width="54" height="22"[^>]*\/><text x="300" y="196"/u);
 assert.match(svg, /marker-start="url\(#canvas_arrow\)"/u);
 assert.doesNotMatch(svg, /marker-end="url\(#canvas_arrow\)"/u);
 assert.doesNotMatch(flat_html, /radial-gradient/u);
