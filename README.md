@@ -56,12 +56,12 @@ These real regression tests compare the original Obsidian Canvas with the PDF pr
 
 ## Included test suite
 
-The repository includes a self-contained Obsidian test workspace in [`Plugin/`](Plugin/README.md). It provides eight focused Canvas files, reusable image and document fixtures, expected-result documentation, and reference exports for repeatable visual regression testing.
+The repository includes a self-contained Obsidian test dataset in [`tests/dataset/`](tests/dataset/README.md). It provides eight focused Canvas files, reusable image and document fixtures, and expected-result documentation for repeatable visual regression testing.
 
-- Start with [`00 - Test Suite Dashboard.canvas`](Plugin/00%20-%20Test%20Suite%20Dashboard.canvas).
-- Use [`reference/Expected Results.md`](Plugin/reference/Expected%20Results.md) for format-by-format acceptance checks.
-- Record manual verification in [`reference/Test Run Template.md`](Plugin/reference/Test%20Run%20Template.md).
-- Compare generated files with the reference exports in `Plugin/Test01`, `Plugin/Test03`, and `Plugin/Test04`.
+- Start with [`00 - Test Suite Dashboard.canvas`](tests/dataset/00%20-%20Test%20Suite%20Dashboard.canvas).
+- Use [`reference/Expected Results.md`](tests/dataset/reference/Expected%20Results.md) for format-by-format acceptance checks.
+- Record manual verification in [`reference/Test Run Template.md`](tests/dataset/reference/Test%20Run%20Template.md).
+- Keep generated exports outside the dataset or in temporary test-output folders.
 
 ## Install locally in Obsidian
 
@@ -106,7 +106,7 @@ npm run verify
 - `src/services` — vault I/O and Electron rendering
 - `src/ui` — settings and export dialogs
 - `tests` — automated exporter tests
-- `Plugin` — complete Obsidian Canvas QA workspace and visual regression fixtures
+- `tests/dataset` — complete Obsidian Canvas QA dataset and visual regression fixtures
 - `imgs` — full-resolution README comparison screenshots
 
 ## Contributing

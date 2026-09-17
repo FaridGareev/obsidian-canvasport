@@ -27,7 +27,7 @@
     "tiny, tall, wide, and overflowing nodes"
   ],
   "intentionalMissingFiles": [
-    "Plugin/fixtures/intentionally-missing.bin"
+    "tests/dataset/fixtures/intentionally-missing.bin"
   ],
   "entryPoint": "00 - Test Suite Dashboard.canvas"
 }

@@ -1,7 +1,7 @@
 {
 	"nodes":[
 		{"id":"bounds","type":"group","x":-1900,"y":-1000,"width":4300,"height":2500,"color":"6","label":"Large Bounds, Dense Layout, and Geometry Stress"},
-		{"id":"banner","type":"file","file":"Plugin/fixtures/wide-banner.svg","x":-1700,"y":-820,"width":1400,"height":260,"color":"6"},
+		{"id":"banner","type":"file","file":"tests/dataset/fixtures/wide-banner.svg","x":-1700,"y":-820,"width":1400,"height":260,"color":"6"},
 		{"id":"negative","type":"text","text":"## Negative coordinates\n\nThis card starts far left of the logical origin and verifies canvas offset calculations.","x":-1700,"y":-350,"width":430,"height":220,"color":"1"},
 		{"id":"tall","type":"text","text":"## Tall node\n\nA narrow card with a large height.\n\nThe text begins at the top and unused space remains an opaque surface.\n\nEdges connect near both ends.","x":-1080,"y":-350,"width":230,"height":920,"color":"2"},
 		{"id":"tiny-a","type":"text","text":"Tiny A","x":-650,"y":-300,"width":85,"height":65,"color":"1"},

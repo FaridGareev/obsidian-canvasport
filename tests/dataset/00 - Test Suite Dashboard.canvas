@@ -8,7 +8,7 @@
 		{"id":"groups","type":"text","text":"## 04 - Groups and Backgrounds\n\nCover, ratio, and repeat backgrounds, opaque surfaces, nested regions, overlapping groups, and group labels.","x":100,"y":700,"width":470,"height":220,"color":"4"},
 		{"id":"stress","type":"text","text":"## 05 - Stress and Boundaries\n\nNegative coordinates, dense grids, tiny cards, wide cards, long content, unusual geometry, and large export bounds.","x":715,"y":700,"width":470,"height":220,"color":"5"},
 		{"id":"minimal","type":"text","text":"## 06 and 07 - Minimal Cases\n\nA single-node canvas plus a completely empty canvas verify safe fallback dimensions and basic export reliability.","x":1330,"y":700,"width":470,"height":220,"color":"6"},
-		{"id":"readme","type":"file","file":"Plugin/README.md","x":350,"y":1200,"width":1215,"height":220,"color":"6"}
+		{"id":"readme","type":"file","file":"tests/dataset/README.md","x":350,"y":1200,"width":1215,"height":220,"color":"6"}
 	],
 	"edges":[
 		{"id":"h1","fromNode":"hero","fromSide":"bottom","toNode":"type","toSide":"top","color":"1","label":"content"},
