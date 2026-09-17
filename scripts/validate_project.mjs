@@ -34,11 +34,35 @@ for (const path of ['README.md', 'LICENSE', 'NOTICE', 'CHANGELOG.md', 'CONTRIBUT
 	if (!existsSync(join(root, path))) fail(`Required publication file is missing: ${path}`);
 }
 
+const listing_path = 'docs/community-listing.md';
+const listing_source = readFileSync(join(root, listing_path), 'utf8');
+const short_description = listing_source.match(/## Short description\r?\n\r?\n([^\r\n]+)/)?.[1];
+const long_description = listing_source.match(/## Long description\r?\n\r?\n([\s\S]*?)\r?\n\r?\nCharacter count:/)?.[1].replace(/\r\n/g, '\n');
+if (!short_description || short_description.length > 200 || !short_description.endsWith('.')) fail('Community short description must be present, at most 200 characters, and end with a period.');
+if (!long_description || long_description.length > 1000) fail('Community long description must be present and at most 1000 characters.');
+
+const community_screenshots = [
+	'01-portable-formats.png',
+	'02-faithful-export.png',
+	'03-embedded-content.png',
+	'04-complex-layouts.png',
+	'05-local-workflow.png',
+];
+for (const screenshot of community_screenshots) {
+	const path = join(root, 'docs', 'community', screenshot);
+	if (!existsSync(path)) fail(`Community screenshot is missing: ${screenshot}`);
+	const image = readFileSync(path);
+	const png_signature = '89504e470d0a1a0a';
+	if (image.subarray(0, 8).toString('hex') !== png_signature) fail(`Community screenshot is not a PNG: ${screenshot}`);
+	if (image.readUInt32BE(16) !== 1200 || image.readUInt32BE(20) !== 800) fail(`Community screenshot must be 1200 by 800 pixels: ${screenshot}`);
+	if (image.length > 5 * 1024 * 1024) fail(`Community screenshot exceeds 5 MB: ${screenshot}`);
+}
+
 for (const path of ['.github/ISSUE_TEMPLATE/bug_report.md', '.github/ISSUE_TEMPLATE/feature_request.md']) {
 	if (!/^---\r?\n/.test(readFileSync(join(root, path), 'utf8'))) fail(`${path} must begin with YAML frontmatter.`);
 }
 
-const markdown_files = ['README.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'RELEASING.md', 'tests/dataset/README.md', 'tests/dataset/reference/Expected Results.md', 'tests/dataset/reference/Test Run Template.md'];
+const markdown_files = ['README.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'RELEASING.md', 'docs/community-listing.md', 'tests/dataset/README.md', 'tests/dataset/reference/Expected Results.md', 'tests/dataset/reference/Test Run Template.md'];
 for (const markdown_file of markdown_files) {
 	const source = readFileSync(join(root, markdown_file), 'utf8');
 	for (const match of source.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
@@ -74,4 +98,5 @@ const actual_missing = [...missing_assets].sort();
 if (JSON.stringify(expected_missing) !== JSON.stringify(actual_missing)) fail(`Unexpected missing dataset assets: ${actual_missing.join(', ')}`);
 
 console.log(`Publication metadata valid: CanvasPort ${manifest.version}.`);
+console.log(`Community listing valid: ${short_description.length}-character short description, ${long_description.length}-character long description, ${community_screenshots.length} screenshots.`);
 console.log(`Dataset valid: ${canvas_files.length} canvases, ${node_count} nodes, ${edge_count} edges.`);

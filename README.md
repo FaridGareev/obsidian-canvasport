@@ -9,6 +9,8 @@ Take any [Obsidian Canvas](https://obsidian.md/canvas) anywhere. CanvasPort is a
 
 **Canvas in. Portable formats out.** Export once for documentation, publishing, printing, presentations, or diagram-as-code workflows.
 
+[![CanvasPort exports Obsidian Canvas files to portable web, image, document, and diagram formats](docs/community/01-portable-formats.png)](docs/community/01-portable-formats.png)
+
 ## Visual examples
 
 These regression tests compare the original Obsidian Canvas with the PDF produced by CanvasPort. Click any image to inspect the full-resolution result.
