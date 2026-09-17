@@ -7,7 +7,8 @@
 
 import { strict as assert } from 'node:assert';
 import { parse_canvas_document } from '../src/lib/canvas';
-import { resolve_edge_color } from '../src/lib/colors';
+import { resolve_canvas_color, resolve_edge_color } from '../src/lib/colors';
+import { render_markdown } from '../src/lib/text';
 import { render_d2_export, render_mermaid_export } from '../src/exporters/diagram_exporter';
 import { render_excalidraw_export } from '../src/exporters/excalidraw_exporter';
 import { render_html_export } from '../src/exporters/html_exporter';
@@ -17,7 +18,7 @@ import { calculate_image_size } from '../src/services/electron_render_service';
 
 const source = JSON.stringify({
 	nodes: [
-		{ id: 'group-a', type: 'group', x: -20, y: -10, width: 460, height: 240, label: 'Overview', color: '6' },
+		{ id: 'group-a', type: 'group', x: -20, y: -10, width: 460, height: 240, label: 'Overview', color: '6', background: 'assets/background.svg', backgroundStyle: 'ratio' },
 		{ id: 'start', type: 'text', x: 10, y: 20, width: 160, height: 80, text: '# Start\n[Read more](https://example.com)', color: '4' },
 		{ id: 'file', type: 'file', x: 230, y: 120, width: 160, height: 70, file: 'assets/image.png' },
 	],
@@ -29,7 +30,14 @@ const options = { canvas_name: 'Example', visual_theme: 'light' as const, group_
 const html = render_html_export(canvas, 'light', options);
 const dark_html = render_html_export(canvas, 'dark', options);
 const svg = render_svg_export(canvas, options);
-const image_assets = new Map([['assets/image.png', 'data:image/png;base64,iVBORw0KGgo=']]);
+const image_assets = new Map([
+	['assets/image.png', { kind: 'image' as const, source: 'data:image/png;base64,iVBORw0KGgo=' }],
+	['assets/background.svg', { kind: 'image' as const, source: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjE4MCI+PC9zdmc+' }],
+	['assets/note.md', { kind: 'markdown' as const, source: '# Intro\n\nOutside\n\n## Embedded section\n\n**Inside section**\n\n## Next\n\nOutside again' }],
+]);
+const markdown_canvas = parse_canvas_document(JSON.stringify({ nodes: [{ id: 'note', type: 'file', x: 0, y: 0, width: 220, height: 120, file: 'assets/note.md', subpath: '#Embedded section' }], edges: [] }));
+const markdown_html = render_html_export(markdown_canvas, 'dark', options, image_assets);
+const markdown_svg = render_svg_export(markdown_canvas, { ...options, visual_theme: 'dark' }, image_assets);
 const html_with_asset = render_html_export(canvas, 'light', options, image_assets);
 const svg_with_asset = render_svg_export(canvas, options, image_assets);
 const flat_options = { ...options, include_grid: false, include_group_labels: false, transparent_background: true };
@@ -47,14 +55,20 @@ assert.notEqual(html, dark_html);
 assert.match(svg, /<svg/u);
 assert.match(svg, /canvas_arrow/u);
 assert.match(html_with_asset, /class="canvas_file_image"/u);
+assert.match(html_with_asset, /background-size:cover/u);
+assert.doesNotMatch(html_with_asset, /background-size:contain/u);
 assert.match(svg_with_asset, /<image href="data:image\/png;base64,/u);
+assert.match(svg_with_asset, /clip-path="url\(#group_clip_group-a\)"/u);
+assert.match(markdown_html, /<h2>Embedded section<\/h2>.*<strong>Inside section<\/strong>/u);
+assert.doesNotMatch(markdown_html, /Outside again/u);
+assert.match(markdown_svg, /Embedded section Inside.*section/u);
 assert.match(svg, />next<\/text>/u);
 assert.match(svg, /marker-start="url\(#canvas_arrow\)"/u);
 assert.doesNotMatch(svg, /marker-end="url\(#canvas_arrow\)"/u);
 assert.doesNotMatch(flat_html, /radial-gradient/u);
 assert.doesNotMatch(flat_html, /Overview/u);
 assert.doesNotMatch(transparent_svg, /<rect width="100%" height="100%" fill="#ffffff"\/>/u);
-assert.match(dark_svg, /fill="#1e1e1e"/u);
+assert.match(dark_svg, /fill="#1c1c1c"/u);
 assert.deepEqual(export_formats, ['html', 'png', 'jpeg', 'webp', 'svg', 'pdf', 'excalidraw', 'mermaid', 'd2']);
 assert.equal(format_file_name('Example', 'html'), 'Example.html');
 assert.equal(format_file_name('Example', 'pdf'), 'Example.pdf');
@@ -63,6 +77,12 @@ assert.deepEqual(normalize_export_formats(['html_light']), ['html']);
 assert.deepEqual(normalize_export_formats(['pdf_dark', 'pdf_light']), ['pdf']);
 assert.equal(resolve_edge_color('3', 'dark'), '#e0de71');
 assert.equal(resolve_edge_color('6', 'dark'), '#a882ff');
+assert.equal(resolve_canvas_color('3', 'dark').fill, '#2a2a22');
+assert.equal(resolve_canvas_color(undefined, 'dark').fill, '#1c1c1c');
+const inline_markdown = render_markdown('`inline code` and [link](https://example.com) and *emphasis*\n\nHidden block ^block-id');
+assert.match(inline_markdown, /<code>inline code<\/code>.*<a href="https:\/\/example\.com".*>link<\/a>.*<em>emphasis<\/em>/u);
+assert.doesNotMatch(inline_markdown, /canvas_token|@@/u);
+assert.doesNotMatch(inline_markdown, /\^block-id/u);
 assert.match(mermaid, /flowchart TD/u);
 assert.match(mermaid, /subgraph group_a/u);
 assert.match(d2, /direction: down/u);

@@ -18,7 +18,7 @@ import { load_export_settings, save_export_settings } from '../state/settings_st
 import { export_modal } from '../ui/export_modal';
 import { overwrite_modal, type overwrite_choice } from '../ui/overwrite_modal';
 import { settings_tab } from '../ui/settings_tab';
-import type { canvas_assets, canvas_document } from '../models/canvas';
+import type { canvas_asset, canvas_assets, canvas_document } from '../models/canvas';
 
 export default class canvas_export_plugin extends Plugin {
 	declare settings: export_settings;
@@ -118,17 +118,20 @@ export default class canvas_export_plugin extends Plugin {
 		return path;
 	}
 
-	private async load_canvas_assets(document: canvas_document): Promise<Map<string, string>> {
+	private async load_canvas_assets(document: canvas_document): Promise<Map<string, canvas_asset>> {
 		const paths = new Set(document.nodes.flatMap((node) => [node.type === 'file' ? node.file : undefined, node.type === 'group' ? node.background : undefined]).filter((path): path is string => Boolean(path)));
-		const assets = new Map<string, string>();
+		const assets = new Map<string, canvas_asset>();
 		for (const path of paths) {
 			const file = this.app.vault.getAbstractFileByPath(path);
 			if (!(file instanceof TFile)) continue;
-			const mime = get_image_mime_type(file.extension);
-			if (!mime) continue;
 			try {
-				const bytes = await this.app.vault.readBinary(file);
-				assets.set(path, `data:${mime};base64,${Buffer.from(bytes).toString('base64')}`);
+				if (file.extension.toLowerCase() === 'md') assets.set(path, { kind: 'markdown', source: await this.app.vault.read(file) });
+				else {
+					const mime = get_image_mime_type(file.extension);
+					if (!mime) continue;
+					const bytes = await this.app.vault.readBinary(file);
+					assets.set(path, { kind: 'image', source: `data:${mime};base64,${Buffer.from(bytes).toString('base64')}` });
+				}
 			} catch {
 				// The regular file card remains available when an optional image cannot be read.
 			}

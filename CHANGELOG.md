@@ -19,6 +19,9 @@ All notable changes to Canvas Export are documented here.
 
 ### Fixed
 
+- Canvas cards now use the same opaque base surface and 7 percent color tint as Obsidian, so the dot grid no longer shows through nodes.
+- Group backgrounds now match Obsidian: cover and ratio use a centered cover image, while repeat uses the image's natural dimensions from the top-left corner.
+- Inline code and links no longer expose internal Markdown placeholder tokens in exported files.
 - Transparent PNG and WebP capture now preserves the alpha channel instead of inheriting a white Electron window background.
 - Canvas preset colors now map to the same red, orange, yellow, green, cyan, and purple values as Obsidian.
 

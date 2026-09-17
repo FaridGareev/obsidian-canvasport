@@ -65,4 +65,9 @@ export interface canvas_snapshot {
 	bounds: canvas_bounds;
 }
 
-export type canvas_assets = ReadonlyMap<string, string>;
+export interface canvas_asset {
+	kind: 'image' | 'markdown';
+	source: string;
+}
+
+export type canvas_assets = ReadonlyMap<string, canvas_asset>;

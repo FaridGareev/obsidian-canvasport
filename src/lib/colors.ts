@@ -29,17 +29,20 @@ const dark_palette: Record<string, string> = {
 	'6': '#a882ff',
 };
 
-const light_default: canvas_color = { fill: '#ffffff', stroke: '#b3b3b3', text: '#2e3338' };
-const dark_default: canvas_color = { fill: '#242424', stroke: '#5c5c5c', text: '#dcddde' };
+const theme_colors = {
+	light: { background: '#ffffff', text: '#222222', border: '#c0c0c0' },
+	dark: { background: '#1c1c1c', text: '#dadada', border: '#7e7e7e' },
+} as const;
 
 export function resolve_canvas_color(color: string | undefined, theme: 'light' | 'dark' = 'light'): canvas_color {
 	const matched = resolve_palette_color(color, theme);
-	if (!matched) return theme === 'dark' ? dark_default : light_default;
-	return { fill: with_alpha(matched, theme === 'dark' ? '22' : '1f'), stroke: matched, text: theme === 'dark' ? '#dcddde' : '#2e3338' };
+	const base = theme_colors[theme];
+	if (!matched) return { fill: base.background, stroke: base.border, text: base.text };
+	return { fill: blend_hex(matched, base.background, 0.07), stroke: blend_hex(matched, base.background, 0.7), text: base.text };
 }
 
 export function resolve_edge_color(color: string | undefined, theme: 'light' | 'dark' = 'light'): string {
-	return resolve_palette_color(color, theme) ?? (theme === 'dark' ? '#b3b3b3' : '#5c5c5c');
+	return resolve_palette_color(color, theme) ?? theme_colors[theme].border;
 }
 
 export function is_hex_color(value: string | undefined): value is string {
@@ -54,4 +57,15 @@ function resolve_palette_color(color: string | undefined, theme: 'light' | 'dark
 export function with_alpha(color: string, alpha: string): string {
 	if (color.length === 4) return `#${color.slice(1).split('').map((part) => `${part}${part}`).join('')}${alpha}`;
 	return `${color}${alpha}`;
+}
+
+function blend_hex(foreground: string, background: string, opacity: number): string {
+	const front = parse_hex(foreground);
+	const back = parse_hex(background);
+	return `#${front.map((channel, index) => Math.round(channel * opacity + back[index] * (1 - opacity)).toString(16).padStart(2, '0')).join('')}`;
+}
+
+function parse_hex(color: string): [number, number, number] {
+	const normalized = color.length === 4 ? color.slice(1).split('').map((part) => `${part}${part}`).join('') : color.slice(1);
+	return [Number.parseInt(normalized.slice(0, 2), 16), Number.parseInt(normalized.slice(2, 4), 16), Number.parseInt(normalized.slice(4, 6), 16)];
 }
