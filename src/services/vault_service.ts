@@ -1,3 +1,10 @@
+/**
+ * Canvas Export — an Obsidian Canvas export plugin.
+ * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
+ * @copyright Copyright (c) 2026 Farid Gareev
+ * @license MIT
+ */
+
 import { TFile, Vault } from 'obsidian';
 
 export function build_output_path(folder: string, filename: string): string {

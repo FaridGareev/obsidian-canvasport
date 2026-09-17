@@ -1,10 +1,15 @@
 {
   "name": "obsidian-canvas-export",
   "version": "0.1.0",
-  "description": "Export Obsidian Canvas files to web, image, diagram, and Excalidraw formats.",
+  "description": "An Obsidian Canvas export plugin for HTML, PNG, JPEG, WebP, SVG, PDF, Excalidraw, Mermaid, and D2.",
+  "author": "Farid Gareev <farid.gareev@my.jcu.edu.au>",
+  "license": "MIT",
   "private": true,
   "type": "module",
-  "main": "main.js",
+  "main": "build/main.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "node esbuild.config.mjs production",
     "dev": "node esbuild.config.mjs",
@@ -16,7 +21,13 @@
     "obsidian",
     "obsidian-plugin",
     "canvas",
-    "export"
+    "export",
+    "html",
+    "svg",
+    "pdf",
+    "excalidraw",
+    "mermaid",
+    "d2"
   ],
   "devDependencies": {
     "@types/node": "^22.10.2",

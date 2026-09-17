@@ -1,3 +1,10 @@
+/**
+ * Canvas Export — an Obsidian Canvas export plugin.
+ * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
+ * @copyright Copyright (c) 2026 Farid Gareev
+ * @license MIT
+ */
+
 import { create_canvas_snapshot, find_parent_group } from '../lib/canvas';
 import { resolve_canvas_color } from '../lib/colors';
 import { strip_markdown } from '../lib/text';

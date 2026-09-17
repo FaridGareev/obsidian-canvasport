@@ -1,3 +1,10 @@
+/**
+ * Canvas Export — an Obsidian Canvas export plugin.
+ * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
+ * @copyright Copyright (c) 2026 Farid Gareev
+ * @license MIT
+ */
+
 export interface text_link {
 	label: string;
 	url: string;

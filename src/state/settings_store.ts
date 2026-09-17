@@ -1,3 +1,10 @@
+/**
+ * Canvas Export — an Obsidian Canvas export plugin.
+ * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
+ * @copyright Copyright (c) 2026 Farid Gareev
+ * @license MIT
+ */
+
 import type { Plugin } from 'obsidian';
 import { z } from 'zod';
 import { clamp_image_quality, clamp_image_scale, create_default_settings, is_export_format, type export_format, type export_settings } from '../models/export';

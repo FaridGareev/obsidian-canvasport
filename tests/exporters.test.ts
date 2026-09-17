@@ -1,3 +1,10 @@
+/**
+ * Canvas Export — an Obsidian Canvas export plugin.
+ * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
+ * @copyright Copyright (c) 2026 Farid Gareev
+ * @license MIT
+ */
+
 import { strict as assert } from 'node:assert';
 import { parse_canvas_document } from '../src/lib/canvas';
 import { render_d2_export, render_mermaid_export } from '../src/exporters/diagram_exporter';
