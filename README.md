@@ -1,35 +1,37 @@
 <!--
-  Canvas Export
-  SPDX-License-Identifier: MIT
+  CanvasPort
+  SPDX-License-Identifier: Apache-2.0
 -->
 
-# Canvas Export for Obsidian
+# CanvasPort for Obsidian
 
-Export your [Obsidian Canvas](https://obsidian.md/canvas) files as shareable web pages, images, documents, and diagram formats. Canvas Export is an open-source Obsidian plugin for turning a canvas into HTML, PNG, JPEG, WebP, SVG, PDF, Excalidraw, Mermaid, or D2 without leaving your vault.
+Take any [Obsidian Canvas](https://obsidian.md/canvas) anywhere. CanvasPort is a local-first desktop plugin that turns Canvas files into self-contained HTML, PNG, JPEG, WebP, SVG, PDF, Excalidraw, Mermaid, or D2 without sending vault data to an external service.
+
+**Canvas in. Portable formats out.** Export once for documentation, publishing, printing, presentations, or diagram-as-code workflows.
 
 ## Visual examples
 
-These real regression tests compare the original Obsidian Canvas with the PDF produced by Canvas Export. Click any image to inspect the full-resolution result.
+These regression tests compare the original Obsidian Canvas with the PDF produced by CanvasPort. Click any image to inspect the full-resolution result.
 
 ### Typography, Markdown, and node geometry
 
 | Obsidian Canvas | Exported PDF |
 | --- | --- |
-| [![Obsidian Canvas typography test with Markdown, task lists, code, links, and different node sizes](imgs/obsidian_test_01.png)](imgs/obsidian_test_01.png) | [![Canvas Export PDF typography result preserving Markdown, node geometry, colors, and connections](imgs/exported_pdf_test_01.png)](imgs/exported_pdf_test_01.png) |
+| [![Obsidian Canvas typography test with Markdown, task lists, code, links, and different node sizes](imgs/obsidian_test_01.png)](imgs/obsidian_test_01.png) | [![CanvasPort PDF typography result preserving Markdown, node geometry, colors, and connections](imgs/exported_pdf_test_01.png)](imgs/exported_pdf_test_01.png) |
 
 ### Embedded files and format coverage
 
 | Obsidian Canvas | Exported PDF |
 | --- | --- |
-| [![Obsidian Canvas test containing SVG, PNG, JPEG, WebP, GIF, BMP, AVIF, PDF, Markdown, and text files](imgs/obsidian_test_03.png)](imgs/obsidian_test_03.png) | [![Canvas Export PDF result containing embedded images, Markdown, text fixtures, fallbacks, and links](imgs/exported_pdf_test_03.png)](imgs/exported_pdf_test_03.png) |
+| [![Obsidian Canvas test containing SVG, PNG, JPEG, WebP, GIF, BMP, AVIF, PDF, Markdown, and text files](imgs/obsidian_test_03.png)](imgs/obsidian_test_03.png) | [![CanvasPort PDF result containing embedded images, Markdown, text fixtures, fallbacks, and links](imgs/exported_pdf_test_03.png)](imgs/exported_pdf_test_03.png) |
 
 ### Groups, surfaces, and backgrounds
 
 | Obsidian Canvas | Exported PDF |
 | --- | --- |
-| [![Obsidian Canvas group test with cover, ratio, repeat, nested, raster, and transparent backgrounds](imgs/obsidian_test_04.png)](imgs/obsidian_test_04.png) | [![Canvas Export PDF result preserving group backgrounds, opaque cards, labels, and overlapping regions](imgs/exported_pdf_test_04.png)](imgs/exported_pdf_test_04.png) |
+| [![Obsidian Canvas group test with cover, ratio, repeat, nested, raster, and transparent backgrounds](imgs/obsidian_test_04.png)](imgs/obsidian_test_04.png) | [![CanvasPort PDF result preserving group backgrounds, opaque cards, labels, and overlapping regions](imgs/exported_pdf_test_04.png)](imgs/exported_pdf_test_04.png) |
 
-## What Canvas Export does
+## What CanvasPort does
 
 - Exports one canvas to several formats in a single action.
 - Applies one clear light, dark, or Obsidian-matched theme to every visual export.
@@ -64,6 +66,17 @@ The repository includes a self-contained Obsidian test dataset in [`tests/datase
 
 ## Install locally in Obsidian
 
+CanvasPort requires the desktop version of Obsidian because image and PDF rendering use Electron APIs.
+
+### Install from a GitHub release
+
+1. Download `main.js`, `manifest.json`, and `styles.css` from the latest release. The release also includes `LICENSE` and `NOTICE` for attribution.
+2. Create `<your-vault>/.obsidian/plugins/canvasport/`.
+3. Copy the three downloaded files into that folder.
+4. Restart Obsidian, open **Settings → Community plugins**, and enable **CanvasPort**.
+
+### Build from source
+
 1. Download or clone this repository.
 2. In the project folder, install Node.js dependencies and build the plugin:
 
@@ -72,9 +85,9 @@ The repository includes a self-contained Obsidian test dataset in [`tests/datase
    npm run build
    ```
 
-3. Create `<your-vault>/.obsidian/plugins/canvas-export/`.
+3. Create `<your-vault>/.obsidian/plugins/canvasport/`.
 4. Copy the three files from `build/` into that folder: `main.js`, `manifest.json`, and `styles.css`.
-5. Open **Settings → Community plugins** in Obsidian, then enable **Canvas Export**.
+5. Restart Obsidian, open **Settings → Community plugins**, and enable **CanvasPort**.
 
 ## Using the plugin
 
@@ -88,7 +101,7 @@ You can also right-click a Canvas file in the file explorer and choose **Export 
 
 ## Development
 
-Canvas Export requires Node.js 20 or later and npm.
+CanvasPort requires Node.js 20 or later and npm.
 
 ```bash
 npm install
@@ -116,6 +129,14 @@ Issues, feature ideas, documentation fixes, and pull requests are welcome. Pleas
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
+## Privacy
+
+CanvasPort runs locally inside Obsidian. It has no accounts, analytics, telemetry, advertising, or external API calls. Canvas content and embedded files remain on your device unless you choose to share an exported file.
+
+## Origin and attribution
+
+CanvasPort is a substantially modified derivative of [Canvas Export](https://github.com/rmoff/obsidian-canvas-export) by Robin Moffatt. The new name and plugin ID distinguish this derivative from the original community plugin. See [NOTICE](NOTICE) for attribution and modification details.
+
 ## License
 
-Canvas Export is released under the [MIT License](LICENSE). You may use, modify, distribute, and include it in commercial or private work, subject to the license notice.
+CanvasPort is distributed under the [Apache License 2.0](LICENSE). You may use, modify, and distribute it subject to that license and the notices in [NOTICE](NOTICE).

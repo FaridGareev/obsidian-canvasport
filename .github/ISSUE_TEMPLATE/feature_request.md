@@ -1,11 +1,11 @@
-<!-- SPDX-License-Identifier: MIT -->
-
 ---
 name: Feature request
-about: Suggest an improvement to Canvas Export
+about: Suggest an improvement to CanvasPort
 title: "feature: "
 labels: enhancement
 ---
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 
 ## Problem
 

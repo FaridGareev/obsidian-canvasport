@@ -1,10 +1,18 @@
-<!-- SPDX-License-Identifier: MIT -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 
 # Changelog
 
-All notable changes to Canvas Export are documented here.
+All notable changes to CanvasPort are documented here.
 
 ## Unreleased
+
+## [1.0.0] - 2026-09-18
+
+### Changed
+
+- Renamed the plugin to CanvasPort with the unique `canvasport` plugin ID.
+- Declared desktop-only compatibility because image and PDF rendering use Electron APIs.
+- Added release automation, version compatibility metadata, security guidance, and upstream attribution.
 
 ### Added
 
@@ -12,7 +20,7 @@ All notable changes to Canvas Export are documented here.
 - SVG edge labels and support for arrowheads at either end of an edge.
 - Embedded raster and SVG images in HTML, image, PDF, and SVG exports, including Canvas group backgrounds.
 - Shared color theme setting with Use Obsidian theme, Always light, and Always dark options for all visual exports.
-- Responsive export dialog with clear format cards, selection feedback, accessible focus states, and improved mobile layout.
+- Responsive export dialog with clear format cards, selection feedback, accessible focus states, and improved narrow-window layout.
 - Plugin stylesheet included in the ready-to-install `build/` package.
 - Simplified HTML and PDF choices so one shared theme controls every visual export.
 - Context-aware settings that only appear when they apply to the selected file types.

@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish plugin assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Verify project
+        run: npm run verify
+      - name: Validate release tag
+        shell: bash
+        run: |
+          manifest_version="$(node -p "require('./manifest.json').version")"
+          if [[ "${GITHUB_REF_NAME}" != "${manifest_version}" ]]; then
+            echo "Tag ${GITHUB_REF_NAME} must match manifest version ${manifest_version}."
+            exit 1
+          fi
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >-
+          gh release create "${GITHUB_REF_NAME}"
+          build/main.js
+          build/manifest.json
+          build/styles.css
+          build/LICENSE
+          build/NOTICE
+          --verify-tag
+          --title "CanvasPort ${GITHUB_REF_NAME}"
+          --generate-notes

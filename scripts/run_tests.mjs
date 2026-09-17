@@ -1,6 +1,6 @@
 /**
- * Canvas Export — an Obsidian Canvas export plugin.
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import { build } from 'esbuild';
@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const temporary_folder = await mkdtemp(join(tmpdir(), 'canvas-export-tests-'));
+const temporary_folder = await mkdtemp(join(tmpdir(), 'canvasport-tests-'));
 const output_file = join(temporary_folder, 'exporters.test.mjs');
 
 try {

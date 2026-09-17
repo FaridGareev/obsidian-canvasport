@@ -1,8 +1,8 @@
 /**
- * Canvas Export — an Obsidian Canvas export plugin.
- * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
- * @copyright Copyright (c) 2026 Farid Gareev
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * Derived from Canvas Export and substantially modified for CanvasPort.
+ * @author Farid Gareev (CanvasPort modifications)
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import type { canvas_bounds, canvas_document, canvas_node, canvas_point, canvas_side, canvas_snapshot } from '../models/canvas';

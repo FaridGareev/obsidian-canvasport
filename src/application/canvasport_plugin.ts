@@ -1,8 +1,8 @@
 /**
- * Canvas Export — an Obsidian Canvas export plugin.
- * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
- * @copyright Copyright (c) 2026 Farid Gareev
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * Derived from Canvas Export and substantially modified for CanvasPort.
+ * @author Farid Gareev (CanvasPort modifications)
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import { Menu, Notice, Plugin, TFile } from 'obsidian';
@@ -21,7 +21,7 @@ import { overwrite_modal, type overwrite_choice } from '../ui/overwrite_modal';
 import { settings_tab } from '../ui/settings_tab';
 import type { canvas_asset, canvas_assets, canvas_document } from '../models/canvas';
 
-export default class canvas_export_plugin extends Plugin {
+export default class canvasport_plugin extends Plugin {
 	declare settings: export_settings;
 
 	async onload(): Promise<void> {

@@ -1,8 +1,9 @@
 {
-  "id": "canvas-export",
-  "name": "Canvas Export",
-  "version": "0.1.0",
+  "id": "canvasport",
+  "name": "CanvasPort",
+  "version": "1.0.0",
   "minAppVersion": "1.7.0",
-  "description": "Export Obsidian Canvas files to HTML, images, SVG, PDF, Excalidraw, Mermaid, and D2.",
-  "isDesktopOnly": false
+  "description": "Export Canvas files to portable web, image, document, and diagram formats.",
+  "author": "Farid Gareev",
+  "isDesktopOnly": true
 }

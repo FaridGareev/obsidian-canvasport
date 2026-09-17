@@ -1,0 +1,13 @@
+CanvasPort
+Copyright 2026 CanvasPort contributors
+
+This product is a substantially modified derivative of Canvas Export:
+https://github.com/rmoff/obsidian-canvas-export
+
+Canvas Export
+Copyright 2026 Robin Moffatt
+
+The original work and this derivative are distributed under the Apache
+License, Version 2.0. CanvasPort introduces a new plugin identity, expanded
+export formats, embedded asset handling, theme controls, visual fidelity
+improvements, automated tests, and a comprehensive QA dataset.

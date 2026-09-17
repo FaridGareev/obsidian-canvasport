@@ -1,6 +1,6 @@
 /**
- * Canvas Export — an Obsidian Canvas export plugin.
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import esbuild from 'esbuild';
@@ -10,8 +10,8 @@ const production = process.argv[2] === 'production';
 
 const buildOptions = {
 	bundle: true,
-	banner: { js: '/*! Canvas Export | SPDX-License-Identifier: MIT */' },
-	entryPoints: ['src/application/canvas_export_plugin.ts'],
+	banner: { js: '/*! CanvasPort | SPDX-License-Identifier: Apache-2.0 | See NOTICE */' },
+	entryPoints: ['src/application/canvasport_plugin.ts'],
 	external: ['obsidian', 'electron', '@electron/remote'],
 	format: 'cjs',
 	legalComments: 'none',
@@ -26,6 +26,8 @@ const buildOptions = {
 async function copy_plugin_assets() {
 	await mkdir('build', { recursive: true });
 	await Promise.all([
+		copyFile('LICENSE', 'build/LICENSE'),
+		copyFile('NOTICE', 'build/NOTICE'),
 		copyFile('manifest.json', 'build/manifest.json'),
 		copyFile('src/styles.css', 'build/styles.css'),
 	]);

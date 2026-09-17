@@ -1,11 +1,11 @@
-<!-- SPDX-License-Identifier: MIT -->
-
 ---
 name: Bug report
-about: Report a reproducible problem with Canvas Export
+about: Report a reproducible problem with CanvasPort
 title: "bug: "
 labels: bug
 ---
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 
 ## What happened?
 

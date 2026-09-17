@@ -1,5 +1,5 @@
 ---
-title: Canvas Export Test Suite
+title: CanvasPort Test Suite
 tags:
   - obsidian
   - canvas
@@ -7,9 +7,9 @@ tags:
   - export
 ---
 
-# Canvas Export Test Suite
+# CanvasPort Test Suite
 
-This folder is a complete visual and functional test bed for the Canvas Export plugin. Start with `00 - Test Suite Dashboard.canvas`, then open the focused canvases for precise comparisons.
+This folder is a complete visual and functional test bed for CanvasPort. Start with `00 - Test Suite Dashboard.canvas`, then open the focused canvases for precise comparisons.
 
 Machine-readable coverage metadata is available in `suite-manifest.json`. Expected visual behavior and a reusable test-run template are stored in the `reference` folder.
 

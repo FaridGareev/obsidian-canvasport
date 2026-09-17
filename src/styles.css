@@ -1,6 +1,8 @@
 /*
- * Canvas Export — an Obsidian Canvas export plugin.
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * Derived from Canvas Export and substantially modified for CanvasPort.
+ * @author Farid Gareev (CanvasPort modifications)
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 .canvas_export_modal_container {

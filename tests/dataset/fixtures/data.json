@@ -1,5 +1,5 @@
 {
-  "suite": "Canvas Export",
+  "suite": "CanvasPort",
   "enabled": true,
   "formats": ["html", "png", "jpeg", "webp", "svg", "pdf", "excalidraw", "mermaid", "d2"],
   "quality": {

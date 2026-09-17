@@ -1,3 +1,3 @@
-Canvas Export unsupported-file fixture
+CanvasPort unsupported-file fixture
 This file exists, but its extension is intentionally outside the plugin's preview list.
 The exporter should render a stable generic file card rather than treating it as missing.

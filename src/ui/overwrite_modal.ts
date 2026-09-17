@@ -1,12 +1,12 @@
 /**
- * Canvas Export — an Obsidian Canvas export plugin.
- * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
- * @copyright Copyright (c) 2026 Farid Gareev
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * Derived from Canvas Export and substantially modified for CanvasPort.
+ * @author Farid Gareev (CanvasPort modifications)
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import { ButtonComponent, Modal } from 'obsidian';
-import type canvas_export_plugin from '../application/canvas_export_plugin';
+import type canvasport_plugin from '../application/canvasport_plugin';
 
 export type overwrite_choice = 'overwrite' | 'rename' | 'skip';
 
@@ -16,7 +16,7 @@ export class overwrite_modal extends Modal {
 	private readonly on_choice: (choice: overwrite_choice) => void;
 	private has_choice = false;
 
-	constructor(plugin: canvas_export_plugin, file_path: string, available_path: string, on_choice: (choice: overwrite_choice) => void) {
+	constructor(plugin: canvasport_plugin, file_path: string, available_path: string, on_choice: (choice: overwrite_choice) => void) {
 		super(plugin.app);
 		this.file_path = file_path;
 		this.available_path = available_path;

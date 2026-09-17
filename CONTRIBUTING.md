@@ -1,8 +1,8 @@
-<!-- SPDX-License-Identifier: MIT -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
 
-# Contributing to Canvas Export
+# Contributing to CanvasPort
 
-Thanks for helping improve Canvas Export. Small, focused contributions are easiest to review and release.
+Thanks for helping improve CanvasPort. Small, focused contributions are easiest to review and release.
 
 ## Before opening a pull request
 

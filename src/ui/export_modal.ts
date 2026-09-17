@@ -1,12 +1,12 @@
 /**
- * Canvas Export — an Obsidian Canvas export plugin.
- * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
- * @copyright Copyright (c) 2026 Farid Gareev
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * Derived from Canvas Export and substantially modified for CanvasPort.
+ * @author Farid Gareev (CanvasPort modifications)
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import { ButtonComponent, Modal, Notice, Setting } from 'obsidian';
-import type canvas_export_plugin from '../application/canvas_export_plugin';
+import type canvasport_plugin from '../application/canvasport_plugin';
 import { clamp_image_quality, clamp_image_scale, format_descriptions, format_labels, is_visual_theme, type export_format, type export_preferences, type visual_theme } from '../models/export';
 import { clamp_title_scale } from '../state/settings_store';
 
@@ -21,7 +21,7 @@ const raster_formats: export_format[] = ['png', 'jpeg', 'webp'];
 const quality_formats: export_format[] = ['jpeg', 'webp'];
 
 export class export_modal extends Modal {
-	private readonly plugin: canvas_export_plugin;
+	private readonly plugin: canvasport_plugin;
 	private readonly on_export: (formats: export_format[], preferences: export_preferences, output_folder: string) => void;
 	private readonly selected_formats: Set<export_format>;
 	private export_button?: ButtonComponent;
@@ -43,7 +43,7 @@ export class export_modal extends Modal {
 	private image_scale: number;
 	private image_quality: number;
 
-	constructor(plugin: canvas_export_plugin, on_export: (formats: export_format[], preferences: export_preferences, output_folder: string) => void) {
+	constructor(plugin: canvasport_plugin, on_export: (formats: export_format[], preferences: export_preferences, output_folder: string) => void) {
 		super(plugin.app);
 		this.plugin = plugin;
 		this.on_export = on_export;

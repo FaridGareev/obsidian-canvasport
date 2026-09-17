@@ -1,19 +1,19 @@
 /**
- * Canvas Export — an Obsidian Canvas export plugin.
- * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
- * @copyright Copyright (c) 2026 Farid Gareev
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * Derived from Canvas Export and substantially modified for CanvasPort.
+ * @author Farid Gareev (CanvasPort modifications)
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import { App, PluginSettingTab, Setting } from 'obsidian';
-import type canvas_export_plugin from '../application/canvas_export_plugin';
+import type canvasport_plugin from '../application/canvasport_plugin';
 import { clamp_image_quality, clamp_image_scale, is_visual_theme } from '../models/export';
 import { clamp_title_scale } from '../state/settings_store';
 
 export class settings_tab extends PluginSettingTab {
-	private readonly plugin: canvas_export_plugin;
+	private readonly plugin: canvasport_plugin;
 
-	constructor(app: App, plugin: canvas_export_plugin) {
+	constructor(app: App, plugin: canvasport_plugin) {
 		super(app, plugin);
 		this.plugin = plugin;
 	}

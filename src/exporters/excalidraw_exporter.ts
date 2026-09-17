@@ -1,8 +1,8 @@
 /**
- * Canvas Export — an Obsidian Canvas export plugin.
- * @author Farid Gareev <farid.gareev@my.jcu.edu.au>
- * @copyright Copyright (c) 2026 Farid Gareev
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * Derived from Canvas Export and substantially modified for CanvasPort.
+ * @author Farid Gareev (CanvasPort modifications)
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import { calculate_anchor, create_canvas_snapshot } from '../lib/canvas';
@@ -61,7 +61,7 @@ export function render_excalidraw_export(document: canvas_document, options: exp
 		bind_arrow(to_shape, arrow_id);
 		elements.push(make_arrow(arrow_id, start.x, start.y, end.x, end.y, resolve_edge_color(edge.color, options.visual_theme), now, from_shape?.id as string | undefined, to_shape?.id as string | undefined, edge.label, edge.fromEnd, edge.toEnd));
 	}
-	return { type: 'excalidraw', version: 2, source: 'canvas-export', elements, appState: { gridSize: null, viewBackgroundColor: options.visual_theme === 'dark' ? '#1e1e1e' : '#ffffff' }, files };
+	return { type: 'excalidraw', version: 2, source: 'canvasport', elements, appState: { gridSize: null, viewBackgroundColor: options.visual_theme === 'dark' ? '#1e1e1e' : '#ffffff' }, files };
 }
 
 function make_image(id: string, file_id: string, node: canvas_node, color: ReturnType<typeof resolve_canvas_color>, updated: number): excalidraw_element {

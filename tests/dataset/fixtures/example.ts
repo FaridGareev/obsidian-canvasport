@@ -1,6 +1,6 @@
 /**
- * Canvas Export test fixture.
- * @license MIT
+ * CanvasPort test fixture.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 export interface ExportJob {

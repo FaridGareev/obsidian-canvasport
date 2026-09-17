@@ -1,4 +1,4 @@
-CANVAS EXPORT - PLAIN TEXT FIXTURE
+CANVASPORT - PLAIN TEXT FIXTURE
 
 Line wrapping should remain predictable.
 Tabs and indentation:

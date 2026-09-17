@@ -1,8 +1,8 @@
 {
-  "name": "obsidian-canvas-export",
-  "version": "0.1.0",
-  "description": "An Obsidian Canvas export plugin for HTML, PNG, JPEG, WebP, SVG, PDF, Excalidraw, Mermaid, and D2.",
-  "license": "MIT",
+  "name": "obsidian-canvasport",
+  "version": "1.0.0",
+  "description": "Export Obsidian Canvas files to portable web, image, document, and diagram formats.",
+  "license": "Apache-2.0",
   "private": true,
   "type": "module",
   "main": "build/main.js",
@@ -14,12 +14,14 @@
     "dev": "node esbuild.config.mjs",
     "test": "node scripts/run_tests.mjs",
     "typecheck": "tsc --noEmit",
-    "verify": "npm run typecheck && npm run test && npm run build"
+    "validate": "node scripts/validate_project.mjs",
+    "verify": "npm run validate && npm run typecheck && npm run test && npm run build"
   },
   "keywords": [
     "obsidian",
     "obsidian-plugin",
     "canvas",
+    "canvasport",
     "export",
     "html",
     "svg",

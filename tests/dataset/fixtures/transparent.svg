@@ -1,4 +1,4 @@
-<!-- Canvas Export test fixture. -->
+<!-- CanvasPort test fixture. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
   <g fill="none" stroke-linecap="round">
     <circle cx="220" cy="180" r="120" stroke="#8b5cf6" stroke-width="44" opacity=".78"/>

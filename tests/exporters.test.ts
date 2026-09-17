@@ -1,6 +1,6 @@
 /**
- * Canvas Export — an Obsidian Canvas export plugin.
- * @license MIT
+ * CanvasPort — portable exports for Obsidian Canvas.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 import { strict as assert } from 'node:assert';
