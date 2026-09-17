@@ -14,7 +14,8 @@ Export your [Obsidian Canvas](https://obsidian.md/canvas) files as shareable web
 - Applies one clear light, dark, or Obsidian-matched theme to every visual export.
 - Creates PNG, JPEG, WebP, and SVG visuals for documentation and sharing.
 - Converts Canvas structure into Excalidraw, Mermaid, and D2 diagrams.
-- Keeps canvas groups, connections, text, file references, and labels in the rendered output where the target format supports them.
+- Keeps canvas groups, connections, text, file content, and labels in the rendered output where the target format supports them.
+- Embeds images directly and places the first page of each Canvas PDF node into PDF exports at full vector quality.
 - Lets you choose an output folder and safely overwrite, rename, or skip existing exports.
 - Offers grid, group-label, transparent-background, image-scale, and image-quality controls.
 - Lets visual exports match Obsidian’s current theme or use a fixed light or dark appearance.

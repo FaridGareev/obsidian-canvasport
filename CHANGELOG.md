@@ -16,6 +16,8 @@ All notable changes to Canvas Export are documented here.
 - Plugin stylesheet included in the ready-to-install `build/` package.
 - Simplified HTML and PDF choices so one shared theme controls every visual export.
 - Context-aware settings that only appear when they apply to the selected file types.
+- Actual first pages of embedded PDF files in PDF exports, instead of filename-only placeholders.
+- Embedded image files in Excalidraw exports and inline previews for common text-based files.
 
 ### Fixed
 
@@ -25,6 +27,7 @@ All notable changes to Canvas Export are documented here.
 - Inline code and links no longer expose internal Markdown placeholder tokens in exported files.
 - Transparent PNG and WebP capture now preserves the alpha channel instead of inheriting a white Electron window background.
 - Canvas preset colors now map to the same red, orange, yellow, green, cyan, and purple values as Obsidian.
+- Generic file cards no longer rely on an ambiguous document emoji.
 
 ## [0.1.0] - 2026-09-17
 

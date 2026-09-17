@@ -103,7 +103,8 @@ function make_svg_text(node: canvas_node, assets: canvas_assets): string {
 	if (node.type === 'text') return strip_markdown(node.text ?? '', true);
 	const asset = node.type === 'file' && node.file ? assets.get(node.file) : undefined;
 	if (asset?.kind === 'markdown') return strip_markdown(select_markdown_subpath(asset.source, node.subpath), true);
-	if (node.type === 'file') return `📄 ${(node.file ?? '').split('/').pop() || 'Untitled file'}`;
+	if (asset?.kind === 'text') return asset.source;
+	if (node.type === 'file') return `${asset?.kind === 'pdf' ? 'PDF: ' : 'File: '}${(node.file ?? '').split('/').pop() || 'Untitled file'}`;
 	if (node.type === 'link') return node.url ?? 'Embedded URL';
 	return node.type;
 }

@@ -6,7 +6,7 @@
  */
 
 import { strict as assert } from 'node:assert';
-import { parse_canvas_document } from '../src/lib/canvas';
+import { create_canvas_snapshot, parse_canvas_document } from '../src/lib/canvas';
 import { resolve_canvas_color, resolve_edge_color } from '../src/lib/colors';
 import { render_markdown } from '../src/lib/text';
 import { render_d2_export, render_mermaid_export } from '../src/exporters/diagram_exporter';
@@ -15,6 +15,8 @@ import { render_html_export } from '../src/exporters/html_exporter';
 import { render_svg_export } from '../src/exporters/svg_exporter';
 import { export_formats, format_file_name, format_labels, normalize_export_formats } from '../src/models/export';
 import { calculate_image_size } from '../src/services/electron_render_service';
+import { embed_canvas_pdf_files } from '../src/services/pdf_composition_service';
+import { PDFDocument } from 'pdf-lib';
 
 const source = JSON.stringify({
 	nodes: [
@@ -34,6 +36,7 @@ const image_assets = new Map([
 	['assets/image.png', { kind: 'image' as const, source: 'data:image/png;base64,iVBORw0KGgo=' }],
 	['assets/background.svg', { kind: 'image' as const, source: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjE4MCI+PC9zdmc+' }],
 	['assets/note.md', { kind: 'markdown' as const, source: '# Intro\n\nOutside\n\n## Embedded section\n\n**Inside section**\n\n## Next\n\nOutside again' }],
+	['assets/data.json', { kind: 'text' as const, source: '{\n  "enabled": true\n}' }],
 ]);
 const markdown_canvas = parse_canvas_document(JSON.stringify({ nodes: [{ id: 'note', type: 'file', x: 0, y: 0, width: 220, height: 120, file: 'assets/note.md', subpath: '#Embedded section' }], edges: [] }));
 const markdown_html = render_html_export(markdown_canvas, 'dark', options, image_assets);
@@ -47,6 +50,7 @@ const dark_svg = render_svg_export(canvas, { ...options, visual_theme: 'dark' })
 const mermaid = render_mermaid_export(canvas);
 const d2 = render_d2_export(canvas);
 const excalidraw = render_excalidraw_export(canvas, options);
+const excalidraw_with_assets = render_excalidraw_export(canvas, options, image_assets);
 
 assert.match(html, /<h1>Start<\/h1>/u);
 assert.match(html, /canvas_arrow/u);
@@ -91,7 +95,23 @@ assert.equal(excalidraw.type, 'excalidraw');
 const elements = excalidraw.elements as unknown[];
 assert.ok(Array.isArray(elements));
 assert.ok(elements.length >= 6);
+assert.equal(Object.keys(excalidraw_with_assets.files as Record<string, unknown>).length, 1);
+assert.ok((excalidraw_with_assets.elements as Record<string, unknown>[]).some((element) => element.type === 'image'));
 assert.throws(() => parse_canvas_document('{"nodes":[]}'), /valid JSON Canvas/u);
 assert.match(render_html_export(parse_canvas_document('{"nodes":[],"edges":[]}'), 'light', options), /width:160px/u);
 assert.deepEqual(calculate_image_size(400, 300, 2), { width: 800, height: 600 });
 assert.throws(() => calculate_image_size(16000, 16000, 4), /exceeds the export limit/u);
+
+const source_pdf = await PDFDocument.create();
+const source_page = source_pdf.addPage([240, 320]);
+source_page.drawText('Embedded PDF page', { x: 36, y: 260, size: 20 });
+const source_pdf_bytes = await source_pdf.save();
+const pdf_assets = new Map([['assets/document.pdf', { kind: 'pdf' as const, source: `data:application/pdf;base64,${Buffer.from(source_pdf_bytes).toString('base64')}` }]]);
+const pdf_canvas = parse_canvas_document(JSON.stringify({ nodes: [{ id: 'pdf', type: 'file', x: 0, y: 0, width: 240, height: 320, file: 'assets/document.pdf' }], edges: [] }));
+const base_pdf = await PDFDocument.create();
+base_pdf.addPage([280, 360]);
+const base_pdf_bytes = await base_pdf.save();
+const composed_pdf = await embed_canvas_pdf_files(Uint8Array.from(base_pdf_bytes).buffer, pdf_canvas, pdf_assets, create_canvas_snapshot(pdf_canvas).bounds);
+const loaded_pdf = await PDFDocument.load(composed_pdf);
+assert.equal(loaded_pdf.getPageCount(), 1);
+assert.ok(composed_pdf.byteLength > base_pdf_bytes.byteLength);

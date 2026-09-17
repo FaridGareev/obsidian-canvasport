@@ -66,7 +66,7 @@ export interface canvas_snapshot {
 }
 
 export interface canvas_asset {
-	kind: 'image' | 'markdown';
+	kind: 'image' | 'markdown' | 'pdf' | 'text';
 	source: string;
 }
 

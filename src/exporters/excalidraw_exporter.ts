@@ -7,16 +7,18 @@
 
 import { calculate_anchor, create_canvas_snapshot } from '../lib/canvas';
 import { resolve_canvas_color, resolve_edge_color } from '../lib/colors';
-import { collect_links, strip_markdown } from '../lib/text';
-import type { canvas_document, canvas_end, canvas_node } from '../models/canvas';
+import { collect_links, select_markdown_subpath, strip_markdown } from '../lib/text';
+import type { canvas_asset, canvas_assets, canvas_document, canvas_end, canvas_node } from '../models/canvas';
 import type { export_options } from '../models/export';
+import { customAlphabet } from 'nanoid';
 
 type excalidraw_element = Record<string, unknown>;
 const create_nanoid = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 14);
 
-export function render_excalidraw_export(document: canvas_document, options: export_options): Record<string, unknown> {
+export function render_excalidraw_export(document: canvas_document, options: export_options, assets: canvas_assets = new Map()): Record<string, unknown> {
 	const snapshot = create_canvas_snapshot(document);
 	const elements: excalidraw_element[] = [];
+	const files: Record<string, unknown> = {};
 	const element_by_node = new Map<string, excalidraw_element>();
 	const now = Date.now();
 	const make_id = (kind: string) => `canvas_${kind}_${create_nanoid()}`;
@@ -29,10 +31,20 @@ export function render_excalidraw_export(document: canvas_document, options: exp
 	}
 	for (const node of snapshot.canvas.nodes.filter((item) => item.type !== 'group')) {
 		const color = resolve_canvas_color(node.color, options.visual_theme);
+		const asset = node.type === 'file' && node.file ? assets.get(node.file) : undefined;
+		if (asset?.kind === 'image') {
+			const image_id = make_id('image');
+			const file_id = make_id('file');
+			const image = make_image(image_id, file_id, node, color, now);
+			files[file_id] = make_excalidraw_file(file_id, asset, now);
+			elements.push(image);
+			element_by_node.set(node.id, image);
+			continue;
+		}
 		const text_id = make_id('text');
 		const link = get_primary_link(node);
 		const shape = make_shape(make_id('node'), node.x, node.y, node.width, node.height, color, now, link, false, text_id);
-		const text = make_text(text_id, node.x + 8, node.y + 6, Math.max(1, node.width - 16), Math.max(1, node.height - 12), make_excalidraw_text(node), color, now, shape.id as string);
+		const text = make_text(text_id, node.x + 8, node.y + 6, Math.max(1, node.width - 16), Math.max(1, node.height - 12), make_excalidraw_text(node, assets), color, now, shape.id as string);
 		elements.push(shape, text);
 		element_by_node.set(node.id, shape);
 	}
@@ -49,7 +61,16 @@ export function render_excalidraw_export(document: canvas_document, options: exp
 		bind_arrow(to_shape, arrow_id);
 		elements.push(make_arrow(arrow_id, start.x, start.y, end.x, end.y, resolve_edge_color(edge.color, options.visual_theme), now, from_shape?.id as string | undefined, to_shape?.id as string | undefined, edge.label, edge.fromEnd, edge.toEnd));
 	}
-	return { type: 'excalidraw', version: 2, source: 'canvas-export', elements, appState: { gridSize: null, viewBackgroundColor: options.visual_theme === 'dark' ? '#1e1e1e' : '#ffffff' }, files: {} };
+	return { type: 'excalidraw', version: 2, source: 'canvas-export', elements, appState: { gridSize: null, viewBackgroundColor: options.visual_theme === 'dark' ? '#1e1e1e' : '#ffffff' }, files };
+}
+
+function make_image(id: string, file_id: string, node: canvas_node, color: ReturnType<typeof resolve_canvas_color>, updated: number): excalidraw_element {
+	return { id, type: 'image', x: node.x, y: node.y, width: node.width, height: node.height, angle: 0, strokeColor: color.stroke, backgroundColor: 'transparent', fillStyle: 'solid', strokeWidth: 1, strokeStyle: 'solid', roughness: 0, opacity: 100, groupIds: [], frameId: null, roundness: { type: 3 }, seed: make_seed(id), version: 1, versionNonce: make_seed(`${id}_nonce`), isDeleted: false, boundElements: null, updated, link: null, locked: false, fileId: file_id, status: 'saved', scale: [1, 1], crop: null };
+}
+
+function make_excalidraw_file(id: string, asset: canvas_asset, created: number): Record<string, unknown> {
+	const mime_type = asset.source.match(/^data:([^;,]+);base64,/u)?.[1] ?? 'image/png';
+	return { id, mimeType: mime_type, dataURL: asset.source, created, lastRetrieved: created };
 }
 
 function make_shape(id: string, x: number, y: number, width: number, height: number, color: ReturnType<typeof resolve_canvas_color>, updated: number, link: string | null, is_group: boolean, text_id?: string): excalidraw_element {
@@ -66,9 +87,12 @@ function make_arrow(id: string, x: number, y: number, end_x: number, end_y: numb
 	return { id, type: 'arrow', x, y, width: delta_x, height: delta_y, angle: 0, strokeColor: color, backgroundColor: 'transparent', fillStyle: 'solid', strokeWidth: 1, strokeStyle: 'solid', roughness: 0, opacity: 85, groupIds: [], frameId: null, roundness: { type: 2 }, seed: make_seed(id), version: 1, versionNonce: make_seed(`${id}_nonce`), isDeleted: false, boundElements: null, updated, link: null, locked: false, points: [[0, 0], [delta_x, delta_y]], lastCommittedPoint: null, startBinding: from_id ? { elementId: from_id, focus: 0, gap: 4, fixedPoint: null } : null, endBinding: to_id ? { elementId: to_id, focus: 0, gap: 4, fixedPoint: null } : null, startArrowhead: from_end === 'arrow' ? 'arrow' : null, endArrowhead: to_end === 'none' ? null : 'arrow', ...(label ? { customData: { label } } : {}) };
 }
 
-function make_excalidraw_text(node: canvas_node): string {
+function make_excalidraw_text(node: canvas_node, assets: canvas_assets): string {
 	if (node.type === 'text') return strip_markdown(node.text ?? '', collect_links(node.text ?? '').length > 1) || 'Text';
-	if (node.type === 'file') return `📄 ${(node.file ?? '').split('/').pop() || 'Untitled file'}${node.subpath ? ` ${node.subpath}` : ''}`;
+	const asset = node.type === 'file' && node.file ? assets.get(node.file) : undefined;
+	if (asset?.kind === 'markdown') return strip_markdown(select_markdown_subpath(asset.source, node.subpath), true);
+	if (asset?.kind === 'text') return asset.source;
+	if (node.type === 'file') return `${asset?.kind === 'pdf' ? 'PDF' : 'File'}\n${(node.file ?? '').split('/').pop() || 'Untitled file'}${node.subpath ? ` ${node.subpath}` : ''}`;
 	if (node.type === 'link') return `Embedded URL\n${node.url ?? ''}`;
 	return node.type || 'Node';
 }
@@ -92,4 +116,3 @@ function make_seed(value: string): number {
 function clamp_scale(value: number): number {
 	return Math.max(0.5, Math.min(5, value / 100));
 }
-import { customAlphabet } from 'nanoid';

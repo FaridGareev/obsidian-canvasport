@@ -13,6 +13,7 @@ import { render_html_export } from '../exporters/html_exporter';
 import { render_svg_export } from '../exporters/svg_exporter';
 import { format_file_name, format_labels, export_formats, is_raster_format, type export_format, type export_options, type export_preferences, type export_settings, type export_theme, type visual_theme } from '../models/export';
 import { create_pdf_document, create_raster_image } from '../services/electron_render_service';
+import { embed_canvas_pdf_files } from '../services/pdf_composition_service';
 import { build_output_path, ensure_output_folder, find_available_path, normalize_output_folder, write_binary_file, write_text_file } from '../services/vault_service';
 import { load_export_settings, save_export_settings } from '../state/settings_store';
 import { export_modal } from '../ui/export_modal';
@@ -101,7 +102,7 @@ export default class canvas_export_plugin extends Plugin {
 		const options: export_options = { canvas_name, ...preferences, visual_theme: this.resolve_visual_theme(preferences.visual_theme) };
 		if (format === 'html') await write_text_file(this.app.vault, path, render_html_export(document, options.visual_theme, { ...options, transparent_background: false }, assets));
 		else if (format === 'svg') await write_text_file(this.app.vault, path, render_svg_export(document, options, assets));
-		else if (format === 'excalidraw') await write_text_file(this.app.vault, path, JSON.stringify(render_excalidraw_export(document, options), null, 2));
+		else if (format === 'excalidraw') await write_text_file(this.app.vault, path, JSON.stringify(render_excalidraw_export(document, options, assets), null, 2));
 		else if (format === 'mermaid') await write_text_file(this.app.vault, path, render_mermaid_export(document));
 		else if (format === 'd2') await write_text_file(this.app.vault, path, render_d2_export(document));
 		else if (is_raster_format(format)) {
@@ -113,7 +114,8 @@ export default class canvas_export_plugin extends Plugin {
 		else if (format === 'pdf') {
 			const snapshot = create_canvas_snapshot(document);
 			const html = render_html_export(document, options.visual_theme, { ...options, transparent_background: false }, assets);
-			await write_binary_file(this.app.vault, path, await create_pdf_document(html, snapshot.bounds.width, snapshot.bounds.height));
+			const base_pdf = await create_pdf_document(html, snapshot.bounds.width, snapshot.bounds.height);
+			await write_binary_file(this.app.vault, path, await embed_canvas_pdf_files(base_pdf, document, assets, snapshot.bounds));
 		}
 		return path;
 	}
@@ -125,9 +127,15 @@ export default class canvas_export_plugin extends Plugin {
 			const file = this.app.vault.getAbstractFileByPath(path);
 			if (!(file instanceof TFile)) continue;
 			try {
-				if (file.extension.toLowerCase() === 'md') assets.set(path, { kind: 'markdown', source: await this.app.vault.read(file) });
+				const extension = file.extension.toLowerCase();
+				if (extension === 'md') assets.set(path, { kind: 'markdown', source: await this.app.vault.read(file) });
+				else if (extension === 'pdf') {
+					const bytes = await this.app.vault.readBinary(file);
+					assets.set(path, { kind: 'pdf', source: `data:application/pdf;base64,${Buffer.from(bytes).toString('base64')}` });
+				}
+				else if (is_text_file(extension)) assets.set(path, { kind: 'text', source: await this.app.vault.read(file) });
 				else {
-					const mime = get_image_mime_type(file.extension);
+					const mime = get_image_mime_type(extension);
 					if (!mime) continue;
 					const bytes = await this.app.vault.readBinary(file);
 					assets.set(path, { kind: 'image', source: `data:${mime};base64,${Buffer.from(bytes).toString('base64')}` });
@@ -171,4 +179,8 @@ function get_error_message(error: unknown): string {
 
 function get_image_mime_type(extension: string): string | undefined {
 	return ({ avif: 'image/avif', bmp: 'image/bmp', gif: 'image/gif', jpeg: 'image/jpeg', jpg: 'image/jpeg', png: 'image/png', svg: 'image/svg+xml', webp: 'image/webp' } as Record<string, string>)[extension.toLowerCase()];
+}
+
+function is_text_file(extension: string): boolean {
+	return new Set(['c', 'cpp', 'cs', 'css', 'csv', 'go', 'h', 'html', 'java', 'js', 'json', 'jsx', 'kt', 'log', 'mjs', 'py', 'rb', 'rs', 'scss', 'sh', 'sql', 'ts', 'tsx', 'txt', 'xml', 'yaml', 'yml']).has(extension);
 }
