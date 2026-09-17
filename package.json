@@ -1,0 +1,31 @@
+{
+  "name": "obsidian-canvas-export",
+  "version": "0.1.0",
+  "description": "Export Obsidian Canvas files to web, image, diagram, and Excalidraw formats.",
+  "private": true,
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "build": "node esbuild.config.mjs production",
+    "dev": "node esbuild.config.mjs",
+    "test": "node scripts/run_tests.mjs",
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run typecheck && npm run test && npm run build"
+  },
+  "keywords": [
+    "obsidian",
+    "obsidian-plugin",
+    "canvas",
+    "export"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "esbuild": "^0.28.2",
+    "obsidian": "latest",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "nanoid": "^5.0.9",
+    "zod": "^4.1.12"
+  }
+}

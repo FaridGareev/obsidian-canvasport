@@ -1,0 +1,20 @@
+# Dependencies and package-manager files
+node_modules/
+
+# Generated plugin package
+/build/
+main.js
+main.js.map
+
+# Test and coverage output
+coverage/
+.nyc_output/
+
+# Operating-system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Obsidian vault state when this project is opened as a vault
+.obsidian/workspace*.json
