@@ -11,7 +11,7 @@ import { render_d2_export, render_mermaid_export } from '../exporters/diagram_ex
 import { render_excalidraw_export } from '../exporters/excalidraw_exporter';
 import { render_html_export } from '../exporters/html_exporter';
 import { render_svg_export } from '../exporters/svg_exporter';
-import { format_file_name, format_labels, export_formats, is_raster_format, type export_format, type export_options, type export_preferences, type export_settings } from '../models/export';
+import { format_file_name, format_labels, export_formats, is_raster_format, type export_format, type export_options, type export_preferences, type export_settings, type export_theme, type visual_theme } from '../models/export';
 import { create_pdf_document, create_raster_image } from '../services/electron_render_service';
 import { build_output_path, ensure_output_folder, find_available_path, normalize_output_folder, write_binary_file, write_text_file } from '../services/vault_service';
 import { load_export_settings, save_export_settings } from '../state/settings_store';
@@ -81,7 +81,7 @@ export default class canvas_export_plugin extends Plugin {
 					failures.push(`${format_labels[format]}: ${get_error_message(error)}`);
 				}
 			}
-			this.settings.last_formats = formats;
+			Object.assign(this.settings, preferences, { last_formats: formats, output_folder });
 			await this.save_settings();
 			this.show_export_result(output_names, failures);
 		} catch (error) {
@@ -96,7 +96,7 @@ export default class canvas_export_plugin extends Plugin {
 			if (choice === 'skip') return undefined;
 			if (choice === 'rename') path = await find_available_path(this.app.vault, path);
 		}
-		const options: export_options = { canvas_name, ...preferences };
+		const options: export_options = { canvas_name, ...preferences, visual_theme: this.resolve_visual_theme(preferences.visual_theme) };
 		if (format === 'html_light' || format === 'html_dark') await write_text_file(this.app.vault, path, render_html_export(document, format === 'html_light' ? 'light' : 'dark', options));
 		else if (format === 'svg') await write_text_file(this.app.vault, path, render_svg_export(document, options));
 		else if (format === 'excalidraw') await write_text_file(this.app.vault, path, JSON.stringify(render_excalidraw_export(document, options), null, 2));
@@ -105,7 +105,7 @@ export default class canvas_export_plugin extends Plugin {
 		else if (is_raster_format(format)) {
 			const snapshot = create_canvas_snapshot(document);
 			const image_options = format === 'jpeg' ? { ...options, transparent_background: false } : options;
-			const html = render_html_export(document, 'light', image_options);
+			const html = render_html_export(document, options.visual_theme, image_options);
 			await write_binary_file(this.app.vault, path, await create_raster_image(html, snapshot.bounds.width, snapshot.bounds.height, format, options.image_scale, options.image_quality));
 		}
 		else {
@@ -117,7 +117,12 @@ export default class canvas_export_plugin extends Plugin {
 	}
 
 	private get_preferences(): export_preferences {
-		return { group_title_scale: this.settings.group_title_scale, include_grid: this.settings.include_grid, include_group_labels: this.settings.include_group_labels, transparent_background: this.settings.transparent_background, image_scale: this.settings.image_scale, image_quality: this.settings.image_quality };
+		return { visual_theme: this.settings.visual_theme, group_title_scale: this.settings.group_title_scale, include_grid: this.settings.include_grid, include_group_labels: this.settings.include_group_labels, transparent_background: this.settings.transparent_background, image_scale: this.settings.image_scale, image_quality: this.settings.image_quality };
+	}
+
+	private resolve_visual_theme(theme: visual_theme): export_theme {
+		if (theme !== 'system') return theme;
+		return document.body.classList.contains('theme-dark') ? 'dark' : 'light';
 	}
 
 	private resolve_output_folder(file: TFile, requested_folder: string): string {

@@ -17,6 +17,7 @@ Export your [Obsidian Canvas](https://obsidian.md/canvas) files as shareable web
 - Keeps canvas groups, connections, text, file references, and labels in the rendered output where the target format supports them.
 - Lets you choose an output folder and safely overwrite, rename, or skip existing exports.
 - Offers grid, group-label, transparent-background, image-scale, and image-quality controls.
+- Lets visual exports match Obsidian’s current theme or use a fixed light or dark appearance.
 
 ## Supported Obsidian Canvas export formats
 
@@ -41,7 +42,7 @@ Export your [Obsidian Canvas](https://obsidian.md/canvas) files as shareable web
    ```
 
 3. Create `<your-vault>/.obsidian/plugins/canvas-export/`.
-4. Copy the two files from `build/` into that folder: `main.js` and `manifest.json`.
+4. Copy the three files from `build/` into that folder: `main.js`, `manifest.json`, and `styles.css`.
 5. Open **Settings → Community plugins** in Obsidian, then enable **Canvas Export**.
 
 ## Using the plugin

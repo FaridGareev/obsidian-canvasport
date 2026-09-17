@@ -7,7 +7,7 @@
 
 import { App, PluginSettingTab, Setting } from 'obsidian';
 import type canvas_export_plugin from '../application/canvas_export_plugin';
-import { clamp_image_quality, clamp_image_scale } from '../models/export';
+import { clamp_image_quality, clamp_image_scale, is_visual_theme } from '../models/export';
 import { clamp_title_scale } from '../state/settings_store';
 
 export class settings_tab extends PluginSettingTab {
@@ -20,6 +20,7 @@ export class settings_tab extends PluginSettingTab {
 
 	display(): void {
 		this.containerEl.empty();
+		new Setting(this.containerEl).setName('Visual export theme').setDesc('Choose the appearance for PNG, JPEG, WebP, and SVG exports. Match Obsidian follows the current app theme.').addDropdown((dropdown) => dropdown.addOptions({ system: 'Match Obsidian', light: 'Light', dark: 'Dark' }).setValue(this.plugin.settings.visual_theme).onChange(async (value) => { if (is_visual_theme(value)) { this.plugin.settings.visual_theme = value; await this.plugin.save_settings(); } }));
 		new Setting(this.containerEl).setName('Group title size (%)').setDesc('Font size for group labels. Allowed range: 50–500.').addText((input) => input.setValue(String(this.plugin.settings.group_title_scale)).setPlaceholder('150').onChange(async (value) => { this.plugin.settings.group_title_scale = clamp_title_scale(value); await this.plugin.save_settings(); }));
 		new Setting(this.containerEl).setName('Include grid').setDesc('Show the canvas dot grid in visual exports.').addToggle((toggle) => toggle.setValue(this.plugin.settings.include_grid).onChange(async (value) => { this.plugin.settings.include_grid = value; await this.plugin.save_settings(); }));
 		new Setting(this.containerEl).setName('Include group labels').setDesc('Show labels above canvas groups.').addToggle((toggle) => toggle.setValue(this.plugin.settings.include_group_labels).onChange(async (value) => { this.plugin.settings.include_group_labels = value; await this.plugin.save_settings(); }));

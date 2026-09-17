@@ -25,16 +25,19 @@ const buildOptions = {
 	target: 'es2022',
 };
 
-async function copy_plugin_manifest() {
+async function copy_plugin_assets() {
 	await mkdir('build', { recursive: true });
-	await copyFile('manifest.json', 'build/manifest.json');
+	await Promise.all([
+		copyFile('manifest.json', 'build/manifest.json'),
+		copyFile('styles.css', 'build/styles.css'),
+	]);
 }
 
 if (production) {
 	await esbuild.build(buildOptions);
-	await copy_plugin_manifest();
+	await copy_plugin_assets();
 } else {
-	await copy_plugin_manifest();
+	await copy_plugin_assets();
 	const context = await esbuild.context(buildOptions);
 	await context.watch();
 }

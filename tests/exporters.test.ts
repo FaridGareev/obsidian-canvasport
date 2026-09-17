@@ -23,13 +23,14 @@ const source = JSON.stringify({
 });
 
 const canvas = parse_canvas_document(source);
-const options = { canvas_name: 'Example', group_title_scale: 150, include_grid: true, include_group_labels: true, transparent_background: false, image_scale: 1, image_quality: 92 };
+const options = { canvas_name: 'Example', visual_theme: 'light' as const, group_title_scale: 150, include_grid: true, include_group_labels: true, transparent_background: false, image_scale: 1, image_quality: 92 };
 const html = render_html_export(canvas, 'light', options);
 const dark_html = render_html_export(canvas, 'dark', options);
 const svg = render_svg_export(canvas, options);
 const flat_options = { ...options, include_grid: false, include_group_labels: false, transparent_background: true };
 const flat_html = render_html_export(canvas, 'light', flat_options);
 const transparent_svg = render_svg_export(canvas, flat_options);
+const dark_svg = render_svg_export(canvas, { ...options, visual_theme: 'dark' });
 const mermaid = render_mermaid_export(canvas);
 const d2 = render_d2_export(canvas);
 const excalidraw = render_excalidraw_export(canvas, options);
@@ -43,6 +44,8 @@ assert.match(svg, /canvas_arrow/u);
 assert.doesNotMatch(flat_html, /radial-gradient/u);
 assert.doesNotMatch(flat_html, /Overview/u);
 assert.doesNotMatch(transparent_svg, /fill="#ffffff"/u);
+assert.match(dark_svg, /fill="#171b22"/u);
+assert.match(dark_svg, /fill="#171b22"/u);
 assert.match(mermaid, /flowchart TD/u);
 assert.match(mermaid, /subgraph group_a/u);
 assert.match(d2, /direction: down/u);

@@ -9,9 +9,11 @@ export const export_formats = ['html_light', 'html_dark', 'png', 'jpeg', 'webp',
 
 export type export_format = typeof export_formats[number];
 export type export_theme = 'light' | 'dark';
+export type visual_theme = export_theme | 'system';
 export type raster_format = Extract<export_format, 'png' | 'jpeg' | 'webp'>;
 
 export interface export_preferences {
+	visual_theme: visual_theme;
 	group_title_scale: number;
 	include_grid: boolean;
 	include_group_labels: boolean;
@@ -26,8 +28,9 @@ export interface export_settings extends export_preferences {
 	output_folder: string;
 }
 
-export interface export_options extends export_preferences {
+export interface export_options extends Omit<export_preferences, 'visual_theme'> {
 	canvas_name: string;
+	visual_theme: export_theme;
 }
 
 export const format_labels: Record<export_format, string> = {
@@ -48,6 +51,7 @@ export function create_default_settings(): export_settings {
 	return {
 		default_formats: ['html_light'],
 		last_formats: [],
+		visual_theme: 'system',
 		group_title_scale: 150,
 		include_grid: true,
 		include_group_labels: true,
@@ -60,6 +64,10 @@ export function create_default_settings(): export_settings {
 
 export function is_export_format(value: unknown): value is export_format {
 	return typeof value === 'string' && export_formats.includes(value as export_format);
+}
+
+export function is_visual_theme(value: unknown): value is visual_theme {
+	return value === 'light' || value === 'dark' || value === 'system';
 }
 
 export function is_raster_format(value: export_format): value is raster_format {
