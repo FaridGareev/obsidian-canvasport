@@ -59,7 +59,7 @@ export function calculate_image_size(width: number, height: number, scale: numbe
 async function use_render_window<T>(html: string, width: number, height: number, render: (window_instance: browser_window) => Promise<T>): Promise<T> {
 	const browser_window = get_browser_window();
 	if (!browser_window) throw new Error('Image and PDF export require the Electron desktop runtime.');
-	const window_instance = new browser_window({ show: false, width: Math.min(Math.ceil(width), maximum_viewport_size), height: Math.min(Math.ceil(height), maximum_viewport_size), webPreferences: { offscreen: true } });
+	const window_instance = new browser_window({ show: false, transparent: true, backgroundColor: '#00000000', width: Math.min(Math.ceil(width), maximum_viewport_size), height: Math.min(Math.ceil(height), maximum_viewport_size), webPreferences: { offscreen: true } });
 	try {
 		await window_instance.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(html)}`);
 		await wait_for_render();

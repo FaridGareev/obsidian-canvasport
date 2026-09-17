@@ -7,6 +7,7 @@
 
 import { strict as assert } from 'node:assert';
 import { parse_canvas_document } from '../src/lib/canvas';
+import { resolve_edge_color } from '../src/lib/colors';
 import { render_d2_export, render_mermaid_export } from '../src/exporters/diagram_exporter';
 import { render_excalidraw_export } from '../src/exporters/excalidraw_exporter';
 import { render_html_export } from '../src/exporters/html_exporter';
@@ -20,7 +21,7 @@ const source = JSON.stringify({
 		{ id: 'start', type: 'text', x: 10, y: 20, width: 160, height: 80, text: '# Start\n[Read more](https://example.com)', color: '4' },
 		{ id: 'file', type: 'file', x: 230, y: 120, width: 160, height: 70, file: 'assets/image.png' },
 	],
-	edges: [{ id: 'edge-a', fromNode: 'start', toNode: 'file', fromSide: 'right', toSide: 'left', label: 'next' }],
+	edges: [{ id: 'edge-a', fromNode: 'start', toNode: 'file', fromSide: 'right', toSide: 'left', fromEnd: 'arrow', toEnd: 'none', label: 'next' }],
 });
 
 const canvas = parse_canvas_document(source);
@@ -28,6 +29,9 @@ const options = { canvas_name: 'Example', visual_theme: 'light' as const, group_
 const html = render_html_export(canvas, 'light', options);
 const dark_html = render_html_export(canvas, 'dark', options);
 const svg = render_svg_export(canvas, options);
+const image_assets = new Map([['assets/image.png', 'data:image/png;base64,iVBORw0KGgo=']]);
+const html_with_asset = render_html_export(canvas, 'light', options, image_assets);
+const svg_with_asset = render_svg_export(canvas, options, image_assets);
 const flat_options = { ...options, include_grid: false, include_group_labels: false, transparent_background: true };
 const flat_html = render_html_export(canvas, 'light', flat_options);
 const transparent_svg = render_svg_export(canvas, flat_options);
@@ -42,17 +46,23 @@ assert.match(html, /image\.png/u);
 assert.notEqual(html, dark_html);
 assert.match(svg, /<svg/u);
 assert.match(svg, /canvas_arrow/u);
+assert.match(html_with_asset, /class="canvas_file_image"/u);
+assert.match(svg_with_asset, /<image href="data:image\/png;base64,/u);
+assert.match(svg, />next<\/text>/u);
+assert.match(svg, /marker-start="url\(#canvas_arrow\)"/u);
+assert.doesNotMatch(svg, /marker-end="url\(#canvas_arrow\)"/u);
 assert.doesNotMatch(flat_html, /radial-gradient/u);
 assert.doesNotMatch(flat_html, /Overview/u);
-assert.doesNotMatch(transparent_svg, /fill="#ffffff"/u);
-assert.match(dark_svg, /fill="#171b22"/u);
+assert.doesNotMatch(transparent_svg, /<rect width="100%" height="100%" fill="#ffffff"\/>/u);
+assert.match(dark_svg, /fill="#1e1e1e"/u);
 assert.deepEqual(export_formats, ['html', 'png', 'jpeg', 'webp', 'svg', 'pdf', 'excalidraw', 'mermaid', 'd2']);
 assert.equal(format_file_name('Example', 'html'), 'Example.html');
 assert.equal(format_file_name('Example', 'pdf'), 'Example.pdf');
 for (const label of Object.values(format_labels)) assert.doesNotMatch(label, /[()]/u);
 assert.deepEqual(normalize_export_formats(['html_light']), ['html']);
 assert.deepEqual(normalize_export_formats(['pdf_dark', 'pdf_light']), ['pdf']);
-assert.match(dark_svg, /fill="#171b22"/u);
+assert.equal(resolve_edge_color('3', 'dark'), '#e0de71');
+assert.equal(resolve_edge_color('6', 'dark'), '#a882ff');
 assert.match(mermaid, /flowchart TD/u);
 assert.match(mermaid, /subgraph group_a/u);
 assert.match(d2, /direction: down/u);

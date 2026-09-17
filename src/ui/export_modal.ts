@@ -139,7 +139,7 @@ export class export_modal extends Modal {
 	private create_appearance_toggles(container: HTMLElement): void {
 		this.grid_setting = new Setting(container).setName('Canvas grid').setDesc('Show the dotted Canvas background.').addToggle((toggle) => toggle.setValue(this.include_grid).onChange((value) => { this.include_grid = value; })).settingEl;
 		this.group_labels_setting = new Setting(container).setName('Group labels').setDesc('Show titles above Canvas groups.').addToggle((toggle) => toggle.setValue(this.include_group_labels).onChange((value) => { this.include_group_labels = value; })).settingEl;
-		this.transparency_setting = new Setting(container).setName('Transparent background').setDesc('Remove the solid background from supported images.').addToggle((toggle) => toggle.setValue(this.transparent_background).onChange((value) => { this.transparent_background = value; })).settingEl;
+		this.transparency_setting = new Setting(container).setName('Transparent background').setDesc('PNG, WebP and SVG only. Some image viewers display transparent areas as white.').addToggle((toggle) => toggle.setValue(this.transparent_background).onChange((value) => { this.transparent_background = value; })).settingEl;
 	}
 
 	private create_image_inputs(container: HTMLElement): void {

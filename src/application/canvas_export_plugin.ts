@@ -18,6 +18,7 @@ import { load_export_settings, save_export_settings } from '../state/settings_st
 import { export_modal } from '../ui/export_modal';
 import { overwrite_modal, type overwrite_choice } from '../ui/overwrite_modal';
 import { settings_tab } from '../ui/settings_tab';
+import type { canvas_assets, canvas_document } from '../models/canvas';
 
 export default class canvas_export_plugin extends Plugin {
 	declare settings: export_settings;
@@ -69,13 +70,14 @@ export default class canvas_export_plugin extends Plugin {
 			const formats = [...new Set(requested_formats)].filter((format) => export_formats.includes(format));
 			if (!formats.length) return;
 			const document = parse_canvas_document(await this.app.vault.read(file));
+			const assets = await this.load_canvas_assets(document);
 			const folder = this.resolve_output_folder(file, output_folder);
 			await ensure_output_folder(this.app.vault, folder);
 			const output_names: string[] = [];
 			const failures: string[] = [];
 			for (const format of formats) {
 				try {
-					const written_path = await this.export_format(document, file.basename, folder, format, preferences);
+					const written_path = await this.export_format(document, file.basename, folder, format, preferences, assets);
 					if (written_path) output_names.push(written_path.split('/').pop() || written_path);
 				} catch (error) {
 					failures.push(`${format_labels[format]}: ${get_error_message(error)}`);
@@ -89,7 +91,7 @@ export default class canvas_export_plugin extends Plugin {
 		}
 	}
 
-	private async export_format(document: ReturnType<typeof parse_canvas_document>, canvas_name: string, folder: string, format: export_format, preferences: export_preferences): Promise<string | undefined> {
+	private async export_format(document: ReturnType<typeof parse_canvas_document>, canvas_name: string, folder: string, format: export_format, preferences: export_preferences, assets: canvas_assets): Promise<string | undefined> {
 		let path = build_output_path(folder, format_file_name(canvas_name, format));
 		if (await this.app.vault.adapter.exists(path)) {
 			const choice = await this.ask_overwrite(path, await find_available_path(this.app.vault, path));
@@ -97,23 +99,41 @@ export default class canvas_export_plugin extends Plugin {
 			if (choice === 'rename') path = await find_available_path(this.app.vault, path);
 		}
 		const options: export_options = { canvas_name, ...preferences, visual_theme: this.resolve_visual_theme(preferences.visual_theme) };
-		if (format === 'html') await write_text_file(this.app.vault, path, render_html_export(document, options.visual_theme, { ...options, transparent_background: false }));
-		else if (format === 'svg') await write_text_file(this.app.vault, path, render_svg_export(document, options));
+		if (format === 'html') await write_text_file(this.app.vault, path, render_html_export(document, options.visual_theme, { ...options, transparent_background: false }, assets));
+		else if (format === 'svg') await write_text_file(this.app.vault, path, render_svg_export(document, options, assets));
 		else if (format === 'excalidraw') await write_text_file(this.app.vault, path, JSON.stringify(render_excalidraw_export(document, options), null, 2));
 		else if (format === 'mermaid') await write_text_file(this.app.vault, path, render_mermaid_export(document));
 		else if (format === 'd2') await write_text_file(this.app.vault, path, render_d2_export(document));
 		else if (is_raster_format(format)) {
 			const snapshot = create_canvas_snapshot(document);
 			const image_options = format === 'jpeg' ? { ...options, transparent_background: false } : options;
-			const html = render_html_export(document, options.visual_theme, image_options);
+			const html = render_html_export(document, options.visual_theme, image_options, assets);
 			await write_binary_file(this.app.vault, path, await create_raster_image(html, snapshot.bounds.width, snapshot.bounds.height, format, options.image_scale, options.image_quality));
 		}
 		else if (format === 'pdf') {
 			const snapshot = create_canvas_snapshot(document);
-			const html = render_html_export(document, options.visual_theme, { ...options, transparent_background: false });
+			const html = render_html_export(document, options.visual_theme, { ...options, transparent_background: false }, assets);
 			await write_binary_file(this.app.vault, path, await create_pdf_document(html, snapshot.bounds.width, snapshot.bounds.height));
 		}
 		return path;
+	}
+
+	private async load_canvas_assets(document: canvas_document): Promise<Map<string, string>> {
+		const paths = new Set(document.nodes.flatMap((node) => [node.type === 'file' ? node.file : undefined, node.type === 'group' ? node.background : undefined]).filter((path): path is string => Boolean(path)));
+		const assets = new Map<string, string>();
+		for (const path of paths) {
+			const file = this.app.vault.getAbstractFileByPath(path);
+			if (!(file instanceof TFile)) continue;
+			const mime = get_image_mime_type(file.extension);
+			if (!mime) continue;
+			try {
+				const bytes = await this.app.vault.readBinary(file);
+				assets.set(path, `data:${mime};base64,${Buffer.from(bytes).toString('base64')}`);
+			} catch {
+				// The regular file card remains available when an optional image cannot be read.
+			}
+		}
+		return assets;
 	}
 
 	private get_preferences(): export_preferences {
@@ -144,4 +164,8 @@ export default class canvas_export_plugin extends Plugin {
 
 function get_error_message(error: unknown): string {
 	return error instanceof Error ? error.message : String(error);
+}
+
+function get_image_mime_type(extension: string): string | undefined {
+	return ({ avif: 'image/avif', bmp: 'image/bmp', gif: 'image/gif', jpeg: 'image/jpeg', jpg: 'image/jpeg', png: 'image/png', svg: 'image/svg+xml', webp: 'image/webp' } as Record<string, string>)[extension.toLowerCase()];
 }

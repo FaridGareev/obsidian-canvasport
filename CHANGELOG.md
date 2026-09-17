@@ -8,11 +8,19 @@ All notable changes to Canvas Export are documented here.
 
 ### Added
 
+- Obsidian-compatible light and dark Canvas color palettes, including custom hexadecimal colors.
+- SVG edge labels and support for arrowheads at either end of an edge.
+- Embedded raster and SVG images in HTML, image, PDF, and SVG exports, including Canvas group backgrounds.
 - Shared color theme setting with Use Obsidian theme, Always light, and Always dark options for all visual exports.
 - Responsive export dialog with clear format cards, selection feedback, accessible focus states, and improved mobile layout.
 - Plugin stylesheet included in the ready-to-install `build/` package.
 - Simplified HTML and PDF choices so one shared theme controls every visual export.
 - Context-aware settings that only appear when they apply to the selected file types.
+
+### Fixed
+
+- Transparent PNG and WebP capture now preserves the alpha channel instead of inheriting a white Electron window background.
+- Canvas preset colors now map to the same red, orange, yellow, green, cyan, and purple values as Obsidian.
 
 ## [0.1.0] - 2026-09-17
 

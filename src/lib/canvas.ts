@@ -65,7 +65,7 @@ export function find_parent_group(node: canvas_node, groups: canvas_node[]): can
 }
 
 function copy_canvas_node(node: canvas_node): canvas_node {
-	return { ...node, text: clean_text(node.text), file: clean_text(node.file), subpath: clean_text(node.subpath), url: clean_text(node.url), color: clean_text(node.color), label: clean_text(node.label) };
+	return { ...node, text: clean_text(node.text), file: clean_text(node.file), subpath: clean_text(node.subpath), url: clean_text(node.url), color: clean_text(node.color), label: clean_text(node.label), background: clean_text(node.background) };
 }
 
 function copy_canvas_edge(edge: canvas_document['edges'][number]): canvas_document['edges'][number] {

@@ -9,6 +9,8 @@ import { z } from 'zod';
 
 const coordinate_schema = z.number();
 const side_schema = z.enum(['top', 'right', 'bottom', 'left']);
+const end_schema = z.enum(['none', 'arrow']);
+const background_style_schema = z.enum(['cover', 'ratio', 'repeat']);
 
 export const canvas_node_schema = z.looseObject({
 	id: z.string().min(1),
@@ -23,6 +25,8 @@ export const canvas_node_schema = z.looseObject({
 	url: z.string().optional(),
 	color: z.string().optional(),
 	label: z.string().optional(),
+	background: z.string().optional(),
+	backgroundStyle: background_style_schema.optional(),
 });
 
 export const canvas_edge_schema = z.looseObject({
@@ -31,6 +35,8 @@ export const canvas_edge_schema = z.looseObject({
 	toNode: z.string().min(1),
 	fromSide: side_schema.optional(),
 	toSide: side_schema.optional(),
+	fromEnd: end_schema.optional(),
+	toEnd: end_schema.optional(),
 	label: z.string().optional(),
 	color: z.string().optional(),
 });

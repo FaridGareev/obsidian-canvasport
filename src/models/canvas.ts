@@ -6,6 +6,8 @@
  */
 
 export type canvas_side = 'top' | 'right' | 'bottom' | 'left';
+export type canvas_end = 'none' | 'arrow';
+export type canvas_background_style = 'cover' | 'ratio' | 'repeat';
 
 export interface canvas_node {
 	id: string;
@@ -20,6 +22,8 @@ export interface canvas_node {
 	url?: string;
 	color?: string;
 	label?: string;
+	background?: string;
+	backgroundStyle?: canvas_background_style;
 }
 
 export interface canvas_edge {
@@ -28,6 +32,8 @@ export interface canvas_edge {
 	toNode: string;
 	fromSide?: canvas_side;
 	toSide?: canvas_side;
+	fromEnd?: canvas_end;
+	toEnd?: canvas_end;
 	label?: string;
 	color?: string;
 }
@@ -58,3 +64,5 @@ export interface canvas_snapshot {
 	nodes_by_id: Map<string, canvas_node>;
 	bounds: canvas_bounds;
 }
+
+export type canvas_assets = ReadonlyMap<string, string>;

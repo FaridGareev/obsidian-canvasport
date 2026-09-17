@@ -8,7 +8,7 @@
 import { calculate_anchor, create_canvas_snapshot } from '../lib/canvas';
 import { resolve_canvas_color, resolve_edge_color } from '../lib/colors';
 import { collect_links, strip_markdown } from '../lib/text';
-import type { canvas_document, canvas_node } from '../models/canvas';
+import type { canvas_document, canvas_end, canvas_node } from '../models/canvas';
 import type { export_options } from '../models/export';
 
 type excalidraw_element = Record<string, unknown>;
@@ -21,14 +21,14 @@ export function render_excalidraw_export(document: canvas_document, options: exp
 	const now = Date.now();
 	const make_id = (kind: string) => `canvas_${kind}_${create_nanoid()}`;
 	for (const group of snapshot.canvas.nodes.filter((node) => node.type === 'group')) {
-		const color = resolve_canvas_color(group.color);
+		const color = resolve_canvas_color(group.color, options.visual_theme);
 		const group_shape = make_shape(make_id('group'), group.x, group.y, group.width, group.height, color, now, null, true);
 		elements.push(group_shape);
 		element_by_node.set(group.id, group_shape);
 		if (options.include_group_labels && group.label) elements.push(make_text(make_id('label'), group.x + 10, group.y - 24, group.width - 20, 20, group.label, color, now, null, Math.round(12 * clamp_scale(options.group_title_scale))));
 	}
 	for (const node of snapshot.canvas.nodes.filter((item) => item.type !== 'group')) {
-		const color = resolve_canvas_color(node.color);
+		const color = resolve_canvas_color(node.color, options.visual_theme);
 		const text_id = make_id('text');
 		const link = get_primary_link(node);
 		const shape = make_shape(make_id('node'), node.x, node.y, node.width, node.height, color, now, link, false, text_id);
@@ -47,9 +47,9 @@ export function render_excalidraw_export(document: canvas_document, options: exp
 		const to_shape = element_by_node.get(to.id);
 		bind_arrow(from_shape, arrow_id);
 		bind_arrow(to_shape, arrow_id);
-		elements.push(make_arrow(arrow_id, start.x, start.y, end.x, end.y, resolve_edge_color(edge.color), now, from_shape?.id as string | undefined, to_shape?.id as string | undefined, edge.label));
+		elements.push(make_arrow(arrow_id, start.x, start.y, end.x, end.y, resolve_edge_color(edge.color, options.visual_theme), now, from_shape?.id as string | undefined, to_shape?.id as string | undefined, edge.label, edge.fromEnd, edge.toEnd));
 	}
-	return { type: 'excalidraw', version: 2, source: 'canvas-export', elements, appState: { gridSize: null, viewBackgroundColor: '#ffffff' }, files: {} };
+	return { type: 'excalidraw', version: 2, source: 'canvas-export', elements, appState: { gridSize: null, viewBackgroundColor: options.visual_theme === 'dark' ? '#1e1e1e' : '#ffffff' }, files: {} };
 }
 
 function make_shape(id: string, x: number, y: number, width: number, height: number, color: ReturnType<typeof resolve_canvas_color>, updated: number, link: string | null, is_group: boolean, text_id?: string): excalidraw_element {
@@ -60,10 +60,10 @@ function make_text(id: string, x: number, y: number, width: number, height: numb
 	return { id, type: 'text', x, y, width, height, angle: 0, strokeColor: color.text, backgroundColor: 'transparent', fillStyle: 'solid', strokeWidth: 1, strokeStyle: 'solid', roughness: 0, opacity: 100, groupIds: [], frameId: null, roundness: null, seed: make_seed(id), version: 1, versionNonce: make_seed(`${id}_nonce`), isDeleted: false, boundElements: null, updated, link: null, locked: false, text, fontSize: font_size, fontFamily: 1, textAlign: container_id ? 'center' : 'left', verticalAlign: container_id ? 'middle' : 'top', containerId: container_id, originalText: text, autoResize: !container_id, lineHeight: 1.25 };
 }
 
-function make_arrow(id: string, x: number, y: number, end_x: number, end_y: number, color: string, updated: number, from_id: string | undefined, to_id: string | undefined, label: string | undefined): excalidraw_element {
+function make_arrow(id: string, x: number, y: number, end_x: number, end_y: number, color: string, updated: number, from_id: string | undefined, to_id: string | undefined, label: string | undefined, from_end: canvas_end | undefined, to_end: canvas_end | undefined): excalidraw_element {
 	const delta_x = end_x - x;
 	const delta_y = end_y - y;
-	return { id, type: 'arrow', x, y, width: delta_x, height: delta_y, angle: 0, strokeColor: color, backgroundColor: 'transparent', fillStyle: 'solid', strokeWidth: 1, strokeStyle: 'solid', roughness: 0, opacity: 85, groupIds: [], frameId: null, roundness: { type: 2 }, seed: make_seed(id), version: 1, versionNonce: make_seed(`${id}_nonce`), isDeleted: false, boundElements: null, updated, link: null, locked: false, points: [[0, 0], [delta_x, delta_y]], lastCommittedPoint: null, startBinding: from_id ? { elementId: from_id, focus: 0, gap: 4, fixedPoint: null } : null, endBinding: to_id ? { elementId: to_id, focus: 0, gap: 4, fixedPoint: null } : null, startArrowhead: null, endArrowhead: 'arrow', ...(label ? { customData: { label } } : {}) };
+	return { id, type: 'arrow', x, y, width: delta_x, height: delta_y, angle: 0, strokeColor: color, backgroundColor: 'transparent', fillStyle: 'solid', strokeWidth: 1, strokeStyle: 'solid', roughness: 0, opacity: 85, groupIds: [], frameId: null, roundness: { type: 2 }, seed: make_seed(id), version: 1, versionNonce: make_seed(`${id}_nonce`), isDeleted: false, boundElements: null, updated, link: null, locked: false, points: [[0, 0], [delta_x, delta_y]], lastCommittedPoint: null, startBinding: from_id ? { elementId: from_id, focus: 0, gap: 4, fixedPoint: null } : null, endBinding: to_id ? { elementId: to_id, focus: 0, gap: 4, fixedPoint: null } : null, startArrowhead: from_end === 'arrow' ? 'arrow' : null, endArrowhead: to_end === 'none' ? null : 'arrow', ...(label ? { customData: { label } } : {}) };
 }
 
 function make_excalidraw_text(node: canvas_node): string {
