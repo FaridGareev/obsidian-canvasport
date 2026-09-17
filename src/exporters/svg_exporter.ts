@@ -131,7 +131,7 @@ function get_svg_image_size(data_url: string): { width: number; height: number }
 	const match = data_url.match(/^data:image\/svg\+xml;base64,(.+)$/u);
 	if (!match) return undefined;
 	try {
-		const source = globalThis.atob(match[1]);
+		const source = window.atob(match[1]);
 		const width = Number(source.match(/<svg[^>]*\bwidth=["']([0-9.]+)/iu)?.[1]);
 		const height = Number(source.match(/<svg[^>]*\bheight=["']([0-9.]+)/iu)?.[1]);
 		return width > 0 && height > 0 ? { width, height } : undefined;

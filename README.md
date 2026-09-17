@@ -72,7 +72,7 @@ CanvasPort requires the desktop version of Obsidian because image and PDF render
 
 ### Install from a GitHub release
 
-1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](https://github.com/FaridGareev/obsidian-canvasport/releases/latest). The release also includes `LICENSE` and `NOTICE` for attribution.
+1. Download `main.js`, `manifest.json`, and `styles.css` from the [latest release](https://github.com/FaridGareev/obsidian-canvasport/releases/latest).
 2. Create `<your-vault>/.obsidian/plugins/canvasport/`.
 3. Copy the three downloaded files into that folder.
 4. Restart Obsidian, open **Settings → Community plugins**, and enable **CanvasPort**.
@@ -110,7 +110,7 @@ npm install
 npm run verify
 ```
 
-`npm run verify` runs TypeScript checks, exporter tests, and a production build. Use `npm run dev` to rebuild while developing. `npm run build` always writes a ready-to-copy plugin package to `build/`.
+`npm run verify` validates publication metadata and test fixtures, runs Obsidian's official ESLint rules, checks TypeScript, executes exporter tests, and creates a production build. Use `npm run dev` to rebuild while developing. `npm run build` always writes a ready-to-copy plugin package to `build/`.
 
 ### Project structure
 

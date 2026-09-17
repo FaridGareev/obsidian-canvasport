@@ -1,6 +1,6 @@
 {
   "name": "obsidian-canvasport",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Export Obsidian Canvas files to portable web, image, document, and diagram formats.",
   "license": "Apache-2.0",
   "homepage": "https://github.com/FaridGareev/obsidian-canvasport#readme",
@@ -20,10 +20,11 @@
   "scripts": {
     "build": "node esbuild.config.mjs production",
     "dev": "node esbuild.config.mjs",
+    "lint": "eslint src",
     "test": "node scripts/run_tests.mjs",
     "typecheck": "tsc --noEmit",
     "validate": "node scripts/validate_project.mjs",
-    "verify": "npm run validate && npm run typecheck && npm run test && npm run build"
+    "verify": "npm run validate && npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "keywords": [
     "obsidian",
@@ -41,6 +42,8 @@
   "devDependencies": {
     "@types/node": "^22.10.2",
     "esbuild": "^0.28.2",
+    "eslint": "^10.10.0",
+    "eslint-plugin-obsidianmd": "^0.4.2",
     "obsidian": "latest",
     "typescript": "^5.7.2"
   },

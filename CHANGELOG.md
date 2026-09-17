@@ -6,6 +6,21 @@ All notable changes to CanvasPort are documented here.
 
 ## Unreleased
 
+## [1.0.1] - 2026-09-18
+
+### Changed
+
+- Added searchable declarative settings for Obsidian 1.13.0 and later while retaining the legacy settings view for older supported versions.
+- Added Obsidian's official ESLint rules to the local verification and CI pipeline.
+- Added GitHub build-provenance attestations for the three supported release assets.
+- Limited GitHub releases to `main.js`, `manifest.json`, and `styles.css`, the files downloaded by Obsidian.
+
+### Fixed
+
+- Replaced `globalThis` with the window-scoped browser API for popout-window compatibility.
+- Replaced source-level CommonJS imports with a static Electron import.
+- Replaced the broad CSS `:has()` focus selector with a lightweight explicit focus class.
+
 ## [1.0.0] - 2026-09-18
 
 ### Changed

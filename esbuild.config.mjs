@@ -12,7 +12,7 @@ const buildOptions = {
 	bundle: true,
 	banner: { js: '/*! CanvasPort | SPDX-License-Identifier: Apache-2.0 | See NOTICE */' },
 	entryPoints: ['src/application/canvasport_plugin.ts'],
-	external: ['obsidian', 'electron', '@electron/remote'],
+	external: ['obsidian', 'electron'],
 	format: 'cjs',
 	legalComments: 'none',
 	logLevel: 'info',

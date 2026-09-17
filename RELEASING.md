@@ -14,7 +14,7 @@ CanvasPort releases use plain semantic-version tags without a `v` prefix. The ta
 6. Commit the release preparation.
 7. Create and push a tag matching the manifest version, for example `1.0.0`.
 
-The release workflow validates the tag, rebuilds the plugin, and publishes the three installable assets plus `LICENSE` and `NOTICE` to a GitHub release.
+The release workflow validates the tag, rebuilds the plugin, creates build-provenance attestations, and publishes only the three assets supported by Obsidian: `main.js`, `manifest.json`, and `styles.css`.
 
 ## Obsidian Community directory
 

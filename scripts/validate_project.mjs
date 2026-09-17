@@ -62,6 +62,24 @@ for (const path of ['.github/ISSUE_TEMPLATE/bug_report.md', '.github/ISSUE_TEMPL
 	if (!/^---\r?\n/.test(readFileSync(join(root, path), 'utf8'))) fail(`${path} must begin with YAML frontmatter.`);
 }
 
+const scanner_checks = [
+	['src/exporters/svg_exporter.ts', /\bglobalThis\b/u, 'Use window or activeWindow instead of globalThis.'],
+	['src/services/electron_render_service.ts', /\brequire\s*\(/u, 'Use a static import instead of require().'],
+	['src/styles.css', /:has\s*\(/u, 'Avoid the broad :has() selector.'],
+];
+for (const [path, pattern, message] of scanner_checks) {
+	if (pattern.test(readFileSync(join(root, path), 'utf8'))) fail(`${path}: ${message}`);
+}
+if (!/getSettingDefinitions\s*\(/u.test(readFileSync(join(root, 'src/ui/settings_tab.ts'), 'utf8'))) fail('The settings tab must expose searchable declarative definitions.');
+
+const release_workflow = readFileSync(join(root, '.github/workflows/release.yml'), 'utf8');
+for (const required of ['attestations: write', 'id-token: write', 'actions/attest-build-provenance@v3']) {
+	if (!release_workflow.includes(required)) fail(`Release workflow is missing ${required}.`);
+}
+for (const unsupported_asset of ['build/LICENSE', 'build/NOTICE']) {
+	if (release_workflow.includes(unsupported_asset)) fail(`Release workflow contains unsupported asset ${unsupported_asset}.`);
+}
+
 const markdown_files = ['README.md', 'CONTRIBUTING.md', 'CHANGELOG.md', 'RELEASING.md', 'docs/community-listing.md', 'tests/dataset/README.md', 'tests/dataset/reference/Expected Results.md', 'tests/dataset/reference/Test Run Template.md'];
 for (const markdown_file of markdown_files) {
 	const source = readFileSync(join(root, markdown_file), 'utf8');

@@ -7,7 +7,9 @@ on:
       - "*"
 
 permissions:
+  attestations: write
   contents: write
+  id-token: write
 
 jobs:
   release:
@@ -28,11 +30,18 @@ jobs:
       - name: Validate release tag
         shell: bash
         run: |
-          manifest_version="$(node -p "require('./manifest.json').version")"
+          manifest_version="$(jq -r '.version' manifest.json)"
           if [[ "${GITHUB_REF_NAME}" != "${manifest_version}" ]]; then
             echo "Tag ${GITHUB_REF_NAME} must match manifest version ${manifest_version}."
             exit 1
           fi
+      - name: Attest release assets
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            build/main.js
+            build/manifest.json
+            build/styles.css
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -41,8 +50,6 @@ jobs:
           build/main.js
           build/manifest.json
           build/styles.css
-          build/LICENSE
-          build/NOTICE
           --verify-tag
           --title "CanvasPort ${GITHUB_REF_NAME}"
           --generate-notes

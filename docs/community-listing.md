@@ -35,7 +35,7 @@ Free. CanvasPort has no paid features, subscriptions, donations, or external ser
 The source repository is public. Leave **Private source repository** disabled.
 
 - Repository: https://github.com/FaridGareev/obsidian-canvasport
-- Release: https://github.com/FaridGareev/obsidian-canvasport/releases/tag/1.0.0
+- Release: https://github.com/FaridGareev/obsidian-canvasport/releases/latest
 
 ## Desktop screenshots
 

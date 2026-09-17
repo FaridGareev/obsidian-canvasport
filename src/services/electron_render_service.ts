@@ -27,11 +27,6 @@ interface browser_window_constructor {
 	new (options: Record<string, unknown>): browser_window;
 }
 
-interface electron_module {
-	remote?: { BrowserWindow?: browser_window_constructor };
-	BrowserWindow?: browser_window_constructor;
-}
-
 const maximum_viewport_size = 16384;
 const maximum_image_pixels = 64_000_000;
 
@@ -57,7 +52,7 @@ export function calculate_image_size(width: number, height: number, scale: numbe
 }
 
 async function use_render_window<T>(html: string, width: number, height: number, render: (window_instance: browser_window) => Promise<T>): Promise<T> {
-	const browser_window = get_browser_window();
+	const browser_window = await get_browser_window();
 	if (!browser_window) throw new Error('Image and PDF export require the Electron desktop runtime.');
 	const window_instance = new browser_window({ show: false, transparent: true, backgroundColor: '#00000000', width: Math.min(Math.ceil(width), maximum_viewport_size), height: Math.min(Math.ceil(height), maximum_viewport_size), webPreferences: { offscreen: true } });
 	try {
@@ -88,11 +83,12 @@ function wait_for_render(): Promise<void> {
 	return new Promise((resolve) => window.setTimeout(resolve, 100));
 }
 
-function get_browser_window(): browser_window_constructor | undefined {
+async function get_browser_window(): Promise<browser_window_constructor | undefined> {
 	try {
-		const electron = require('electron') as electron_module;
-		return electron.remote?.BrowserWindow ?? electron.BrowserWindow;
+		const electron = await import('electron');
+		const candidate = electron.remote?.BrowserWindow ?? electron.BrowserWindow;
+		return typeof candidate === 'function' ? candidate : undefined;
 	} catch {
-		try { return (require('@electron/remote') as { BrowserWindow?: browser_window_constructor }).BrowserWindow; } catch { return undefined; }
+		return undefined;
 	}
 }

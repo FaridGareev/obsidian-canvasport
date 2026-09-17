@@ -1,9 +1,10 @@
 {
   "id": "canvasport",
   "name": "CanvasPort",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "1.7.0",
   "description": "Export Canvas files to portable web, image, document, and diagram formats.",
   "author": "Farid Gareev",
+  "authorUrl": "https://github.com/FaridGareev",
   "isDesktopOnly": true
 }

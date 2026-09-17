@@ -108,6 +108,8 @@ export class export_modal extends Modal {
 		input.checked = this.selected_formats.has(format);
 		label.toggleClass('is-selected', input.checked);
 		input.setAttr('aria-label', `${format_labels[format]}. ${format_descriptions[format]}`);
+		input.addEventListener('focus', () => label.toggleClass('is-keyboard-focused', input.matches(':focus-visible')));
+		input.addEventListener('blur', () => label.removeClass('is-keyboard-focused'));
 		input.addEventListener('change', () => {
 			if (input.checked) this.selected_formats.add(format);
 			else this.selected_formats.delete(format);
@@ -137,9 +139,9 @@ export class export_modal extends Modal {
 	}
 
 	private create_appearance_toggles(container: HTMLElement): void {
-		this.grid_setting = new Setting(container).setName('Canvas grid').setDesc('Show the dotted Canvas background.').addToggle((toggle) => toggle.setValue(this.include_grid).onChange((value) => { this.include_grid = value; })).settingEl;
-		this.group_labels_setting = new Setting(container).setName('Group labels').setDesc('Show titles above Canvas groups.').addToggle((toggle) => toggle.setValue(this.include_group_labels).onChange((value) => { this.include_group_labels = value; })).settingEl;
-		this.transparency_setting = new Setting(container).setName('Transparent background').setDesc('PNG, WebP and SVG only. Some image viewers display transparent areas as white.').addToggle((toggle) => toggle.setValue(this.transparent_background).onChange((value) => { this.transparent_background = value; })).settingEl;
+		this.grid_setting = new Setting(container).setName('Canvas grid').setDesc('Show the dotted canvas background.').addToggle((toggle) => toggle.setValue(this.include_grid).onChange((value) => { this.include_grid = value; })).settingEl;
+		this.group_labels_setting = new Setting(container).setName('Group labels').setDesc('Show titles above canvas groups.').addToggle((toggle) => toggle.setValue(this.include_group_labels).onChange((value) => { this.include_group_labels = value; })).settingEl;
+		this.transparency_setting = new Setting(container).setName('Transparent background').setDesc('Transparent files only. Some image viewers display transparent areas as white.').addToggle((toggle) => toggle.setValue(this.transparent_background).onChange((value) => { this.transparent_background = value; })).settingEl;
 	}
 
 	private create_image_inputs(container: HTMLElement): void {
@@ -160,7 +162,7 @@ export class export_modal extends Modal {
 	}
 
 	private create_folder_input(container: HTMLElement): void {
-		new Setting(container).setName('Folder inside the Canvas folder').setDesc('Leave empty to save beside the Canvas file.').addText((input) => input.setValue(this.output_folder).setPlaceholder('Exports').onChange((value) => { this.output_folder = value.trim(); }));
+		new Setting(container).setName('Folder inside the canvas folder').setDesc('Leave empty to save beside the canvas file.').addText((input) => input.setValue(this.output_folder).setPlaceholder('Exports').onChange((value) => { this.output_folder = value.trim(); }));
 	}
 
 	private create_export_button(): void {
