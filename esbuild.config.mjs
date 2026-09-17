@@ -27,7 +27,7 @@ async function copy_plugin_assets() {
 	await mkdir('build', { recursive: true });
 	await Promise.all([
 		copyFile('manifest.json', 'build/manifest.json'),
-		copyFile('styles.css', 'build/styles.css'),
+		copyFile('src/styles.css', 'build/styles.css'),
 	]);
 }
 
